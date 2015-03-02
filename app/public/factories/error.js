@@ -9,10 +9,9 @@ buckutt.factory('Error', [function () {
 		1: 'Page introuvable.',
 		2: 'La carte ne correspond à aucun utilisateur.'
 	};
-	return function (title, message) {
-			console.log('Here');
+	return function (title, message, comment="") {
 		$title.text(title);
-		$content.text(msgCodes[message]);
+		$content.text(msgCodes[message] + " " + comment);
 		$modal.modal();
 	};
 }]);

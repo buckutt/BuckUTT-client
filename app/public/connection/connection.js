@@ -20,11 +20,11 @@ buckutt.controller('Connection', [
 					if(res_api.data) {
 						askForPin(res_api.data);
 					} else {
-						Error('Erreur', 2);
+						Error('Erreur', 2, '(mol)');
 					}
 				});
-			}
-			$scope.cardId = '';
+				$scope.cardId = '';
+			} else Error('Erreur', 2, '(empty)');
 		}
 
 		var askForPin = function(mol) {
@@ -35,7 +35,7 @@ buckutt.controller('Connection', [
 				if(res_api.data) {
 					console.log(res_api.data);
 				} else {
-					Error('Erreur', 2);
+					Error('Erreur', 2, '(user)');
 				}
 			});
 		}
