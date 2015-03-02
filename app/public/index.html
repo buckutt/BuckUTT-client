@@ -15,7 +15,25 @@
         <title>BuckUTT</title>
     </head>
     <body>
-        <div class="container" ng-view></div>
+        <div id="modalError" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 id="modalErrorTitle" class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modalErrorText"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bt-ndanger" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" ng-view></div>
         <script src="static/vendor/jquery/dist/jquery.min.js"></script>
         <script src="static/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="static/vendor/angular/angular.min.js"></script>
@@ -28,6 +46,10 @@
 
         <script src="app.js"></script>
 
+        <script src="directives/autofocus.js"></script>
+        <script src="directives/enter.js"></script>
+        <script src="factories/error.js"></script>
+        <script src="resources/getid.js"></script>
         <script src="connection/connection.js"></script>
     </body>
 </html>
