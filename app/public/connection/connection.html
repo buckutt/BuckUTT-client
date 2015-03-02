@@ -1,8 +1,7 @@
-<div ng-controller="Connection">
-	<div ng-click="autofocus()">
-		<h2 class="text-center"><strong>En attente d'un vendeur !</strong></h2>
-		<form>
-			<input type="text" ng-enter="pressEnter()" ng-model="cardId" id="cardId" class="hiddenElement" focus-me="cardIdFocus"/>
-		</form>
-	</div>
+<div ng-controller="Connection" ng-click="autofocus()" ng-focus="autofocus()" class="fullWindow">
+	<br />
+	<h2 class="text-center"><strong>En attente d'un vendeur !</strong></h2>
+	<form>
+		<input type="text" ng-enter="pressEnter()" ng-model="cardId" id="cardId" class="hiddenElement" focus-me="cardIdFocus"/>
+	</form>
 </div>
