@@ -1,0 +1,25 @@
+.bu-pin-digit {
+	border-collapse:collapse;
+	margin:auto;
+}
+
+.bu-pin-digit td {
+	font-size:30px;
+	font-weight:bold;
+	border:1px solid #DDDDDD;
+	background-color:#F1F1F1;
+	text-align:center;
+	width:70px;
+	height:50px;
+}
+
+.bu-pin-digit a {
+	color:black;
+	display:block;
+	width:100%;
+	height:100%;
+}
+
+.bu-pin-digit a:hover {
+	text-decoration:none;
+}
