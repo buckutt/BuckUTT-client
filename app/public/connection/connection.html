@@ -9,10 +9,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">Code Pin</h4>
-                    Bonjour {{ user.firstname }} {{ user.lastname }}, merci de rentrer votre code pin :
+                    Bonjour, merci de rentrer votre code pin :
                 </div>
                 <div class="modal-body">
 					<table class="bu-pin-digit">
+						<tr>
+							<th colspan="3">
+								<form>
+									<input type="password" maxlength="4" ng-model="userPin" id="userPin" class="text-center vanilla-input"/>
+								</form>
+							</th>
+						</tr>
 						<tr>
 							<td ng-click="changeUserPin(1)"><a href="">1</a></td><td ng-click="changeUserPin(2)"><a href="">2</a></td><td ng-click="changeUserPin(3)"><a href="">3</a></td>
 						</tr>
@@ -23,19 +30,12 @@
 							<td ng-click="changeUserPin(7)"><a href="">7</a></td><td ng-click="changeUserPin(8)"><a href="">8</a></td><td ng-click="changeUserPin(9)"><a href="">9</a></td>
 						</tr>
 						<tr>
-							<td class="bu-pin-digit-red" ng-click="changeUserPin('x')"><a href=""><i class="glyphicon glyphicon-remove"></i></a></td><td ng-click="changeUserPin(0)"><a href="">0</a></td><td class="bu-pin-digit-green" ng-click="sendUserPin()"><a href=""><i class="glyphicon glyphicon-ok"></i></a></td>
-						</tr>
-						<tr>
-							<th colspan="3">
-								<form>
-									<input type="password" maxlength="4" ng-model="userPin" id="userPin" class="hiddenElement"/>
-								</form>
-							</th>
+							<td class="bu-pin-digit-red" ng-click="changeUserPin('x')"><a href=""><i class="glyphicon glyphicon-remove"></i></a></td><td ng-click="changeUserPin(0)"><a href="">0</a></td><td class="bu-pin-digit-green" ng-click="log()" data-dismiss="modal"><a href=""><i class="glyphicon glyphicon-ok"></i></a></td>
 						</tr>
 					</table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearPin()">Annuler</button>
                 </div>
             </div>
         </div>

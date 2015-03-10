@@ -5,5 +5,5 @@ buckutt.factory('GetId', function ($resource) {
 });
 
 buckutt.factory('GetUser', function ($resource) {
-	return $resource('/api/users/:user');
+	return $resource('/api/user/:userId');
 });

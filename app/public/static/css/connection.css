@@ -23,3 +23,8 @@
 .bu-pin-digit a:hover {
 	text-decoration:none;
 }
+
+.vanilla-input {
+	border:0;
+	background:transparent;
+}

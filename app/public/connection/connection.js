@@ -5,9 +5,11 @@ buckutt.controller('Connection', [
 	'GetId',
 	'GetUser',
 	'Error',
-	function($scope, GetId, GetUser, Error) {
+	'GetLogin',
+	function($scope, GetId, GetUser, Error, GetLogin) {
 		$scope.userPin = '';
-		
+		$scope.savedId = '';
+
 		$scope.autofocus = function() {
 			$scope.cardIdFocus = true;
 		}
@@ -15,32 +17,15 @@ buckutt.controller('Connection', [
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
 			if(cardId != "") {
-				GetId.get({
-					cardId: cardId
-				},
-				function(res_api) {
-					if(res_api.data) {
-						askForPin(res_api.data);
-					} else {
-						Error('Erreur', 2, '(mol)');
-					}
-				});
-				$scope.cardId = '';
+				$scope.savedId = cardId;
+				askForPin();
 			} else Error('Erreur', 2, '(empty)');
+			$scope.cardId = '';
 		}
 
-		var askForPin = function(mol) {
-			GetUser.get({
-				user: mol.UserId
-			},
-			function(res_api) {
-				if(res_api.data) {
-					$scope.user = res_api.data;
-					$('#modalPin').modal();
-				} else {
-					Error('Erreur', 2, '(user)');
-				}
-			});
+		//var askForPin = function(mol) {
+		var askForPin = function() {
+			$('#modalPin').modal();
 		}
 
 		$scope.changeUserPin = function(value) {
@@ -48,8 +33,26 @@ buckutt.controller('Connection', [
 			else if(value == "x") $scope.userPin = $scope.userPin.substring(0,$scope.userPin.length-1);
 		}
 
-		$scope.sendUserPin = function() {
-			console.log($scope.userPin);
+		$scope.log = function() {
+			GetLogin.save({
+				UserId: $scope.savedId
+			},
+			function(res_api) {
+				if(res_api.token) {
+					console.log(res_api.token);
+				} else if(res_api.error) {
+					Error('Erreur', 2, '(login)');
+				}
+			},
+			function(err) {
+				Error('Erreur', 2, '(login)');
+			});
+			$scope.userPin = '';
+		}
+
+		$scope.clearpin = function() {
+			alert('Clear');
+			$scope.userPin = '';
 		}
 
 		$scope.autofocus();
