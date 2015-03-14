@@ -1,9 +1,9 @@
 'use strict';
 
 buckutt.factory('GetId', function ($resource) {
-	return $resource('/api/meanofloginsusers?data=:cardId');
+	return $resource('/api/meanofloginsusers');
 });
 
 buckutt.factory('GetUser', function ($resource) {
-	return $resource('/api/user/:userId');
+	return $resource('/api/users');
 });

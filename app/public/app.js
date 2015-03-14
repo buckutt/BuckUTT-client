@@ -8,13 +8,9 @@ var buckutt = angular.module('buckutt', [
     $routeProvider
         .when('/', {
             templateUrl: 'connection/connection.html'
+        }).when('/waiter', {
+            templateUrl: 'waiter/waiter.html'
         }).otherwise({
             redirectTo: '/'
         });
-}])
-.config(['$httpProvider', function($httpProvider) {
-        $httpProvider.defaults.useXDomain = true;
-        $httpProvider.defaults.withCredentials = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    }
-]);
+}]);
