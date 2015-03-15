@@ -5,9 +5,11 @@ buckutt.controller('Waiter', [
 	'$location',
 	'GetUser',
 	'GetId',
+	'GetDevice',
+	'GetDevicePoint',
 	'User',
 	'Error',
-	function($scope, $location, GetUser, GetId, User, Error) {
+	function($scope, $location, GetUser, GetId, GetPoint, GetDevicePoint, User, Error) {
 		if(!User.hasRight('waiter')) {
 			Error('Erreur', 3);
 			$location.path("/");
