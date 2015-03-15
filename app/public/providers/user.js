@@ -55,7 +55,7 @@ buckutt.provider('User', [
 			if(!_user) return false;
 			switch(view) {
 				case 'waiter':
-					if(_checkRight(11, point) || _checkRight(5)) return true;
+					if(_checkRight('Seller', point) || _checkRight('droit_admin')) return true;
 					return false;
 					break;
 				default:
@@ -69,7 +69,7 @@ buckutt.provider('User', [
 			if(!_user) return false;
 			for(var key in _user.UsersRights) {
 				var value = _user.UsersRights[key];
-				if((value.RightId == right && !point) || (value.RightId == right && value.PointId == point)) return true;
+				if((value.name == right && !point) || (value.name == right && value.PointId == point)) return true;
 			}
 			return false;
 		};

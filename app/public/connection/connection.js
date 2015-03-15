@@ -10,7 +10,8 @@ buckutt.controller('Connection', [
 	'Error',
 	'User',
 	'GetLogin',
-	function($scope, $location, $http, GetId, GetUser, GetRights, Error, User, GetLogin) {
+	'jwtHelper',
+	function($scope, $location, $http, GetId, GetUser, GetRights, Error, User, GetLogin, jwtHelper) {
 		$scope.userPin = '';
 		$scope.savedId = '';
 
@@ -56,18 +57,9 @@ buckutt.controller('Connection', [
 							function(res_api) {
 								if(res_api.data) {
 									var savedUser = res_api.data;
-									GetRights.get({
-										UserId: savedUser.id,
-										isRemoved: false
-									},
-									function(res_api) {
-										if(res_api.data) {
-											savedUser.UsersRights = res_api.data;
-											User.setUser(savedUser);
-											$location.path("/waiter");
-										}
-										else Error('Erreur', 2, '(rights)');
-									});
+									savedUser.UsersRights = jwtHelper.decodeToken(User.getToken()).rights;
+									User.setUser(savedUser);
+									$location.path("/waiter");
 								}
 								else Error('Erreur', 2, '(user)');
 							});

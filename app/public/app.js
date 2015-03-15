@@ -2,7 +2,8 @@
 
 var buckutt = angular.module('buckutt', [
     'ngRoute',
-    'ngResource'
+    'ngResource',
+    'angular-jwt'
 ])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
