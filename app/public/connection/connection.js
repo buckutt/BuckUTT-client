@@ -2,7 +2,6 @@
 
 buckutt.controller('Connection', [
 	'$scope',
-	'$rootScope',
 	'$location',
 	'$http',
 	'GetId',
@@ -11,7 +10,7 @@ buckutt.controller('Connection', [
 	'Error',
 	'User',
 	'GetLogin',
-	function($scope, $rootScope, $location, $http, GetId, GetUser, GetRights, Error, User, GetLogin) {
+	function($scope, $location, $http, GetId, GetUser, GetRights, Error, User, GetLogin) {
 		$scope.userPin = '';
 		$scope.savedId = '';
 
@@ -42,8 +41,8 @@ buckutt.controller('Connection', [
 			},
 			function(res_api) {
 				if(res_api.token) {
-					$rootScope.token = res_api.token;
-					$http.defaults.headers.common.Authorization = 'Bearer '+$rootScope.token;
+					User.setToken(res_api.token);
+					$http.defaults.headers.common.Authorization = 'Bearer '+User.getToken();
 					GetId.get({
 						data: $scope.savedId,
 						isRemoved: false

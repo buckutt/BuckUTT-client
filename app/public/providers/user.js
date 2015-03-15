@@ -2,7 +2,9 @@
 
 buckutt.provider('User', [
 	function () {
+		var _token = undefined;
 		var _user = undefined;
+		var _buyer = undefined;
 
 		this.$get = function() {
 			return {
@@ -17,17 +19,37 @@ buckutt.provider('User', [
 				},
 				setUser: function(user) {
 					_setUser(user);
+				},
+				getBuyer: function () { 
+					return _buyer;
+				},
+				setBuyer: function (buyer) { 
+					_setBuyer(buyer);
+				},
+				getToken: function () { 
+					return _token;
+				},
+				setToken: function (token) { 
+					_setToken(token);
 				}
 			}
 		};
 
 		var _setUser = function(data) {
 			_user = data;
-		}
+		};
+
+		var _setBuyer = function(data) {
+			_buyer = data;
+		};
+
+		var _setToken = function(data) {
+			_token = data;
+		};
 
 		var _logout = function() {
 			_setUser(undefined);
-		}
+		};
 
 		var _hasRight = function(view) {
 			if(!_user) return false;
@@ -41,7 +63,7 @@ buckutt.provider('User', [
 
 			}
 			return false;
-		}
+		};
 
 		var _checkRight = function(right) {
 			if(!_user) return false;
@@ -50,11 +72,11 @@ buckutt.provider('User', [
 				if(value.RightId == right) return true;
 			}
 			return false;
-		}
+		};
 
 		var _isLogged = function() {
 			if(_user) return true;
 			return false;
-		}
+		};
 	}
 ]);
