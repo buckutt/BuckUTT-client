@@ -7,9 +7,11 @@ buckutt.controller('Connection', [
 	'$http',
 	'GetId',
 	'GetUser',
+	'GetRights',
 	'Error',
+	'User',
 	'GetLogin',
-	function($scope, $rootScope, $location, $http, GetId, GetUser, Error, GetLogin) {
+	function($scope, $rootScope, $location, $http, GetId, GetUser, GetRights, Error, User, GetLogin) {
 		$scope.userPin = '';
 		$scope.savedId = '';
 
@@ -43,18 +45,30 @@ buckutt.controller('Connection', [
 					$rootScope.token = res_api.token;
 					$http.defaults.headers.common.Authorization = 'Bearer '+$rootScope.token;
 					GetId.get({
-						data: $scope.savedId
+						data: $scope.savedId,
+						isRemoved: false
 					},
 					function(res_api) {
 						if(res_api.data) {
 							GetUser.get({
 								id: res_api.data.UserId,
-								embed: 'rights'
+								isRemoved: false
 							},
 							function(res_api) {
 								if(res_api.data) {
-									$rootScope.seller = res_api.data;
-									$location.path("/waiter");
+									var savedUser = res_api.data;
+									GetRights.get({
+										UserId: savedUser.id,
+										isRemoved: false
+									},
+									function(res_api) {
+										if(res_api.data) {
+											savedUser.UsersRights = res_api.data;
+											User.setUser(savedUser);
+											$location.path("/waiter");
+										}
+										else Error('Erreur', 2, '(rights)');
+									});
 								}
 								else Error('Erreur', 2, '(user)');
 							});

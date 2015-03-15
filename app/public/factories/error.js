@@ -7,7 +7,8 @@ buckutt.factory('Error', [function () {
 	var msgCodes = {
 		0: 'Erreur inconnue.',
 		1: 'Page introuvable.',
-		2: 'La carte ne correspond à aucun utilisateur.'
+		2: 'La carte ne correspond à aucun utilisateur.',
+		3: 'Vous n\'avez pas le droit de voir cette page, l\'utilisateur a été déconnectée'
 	};
 	return function (title, message, comment="") {
 		$title.text(title);

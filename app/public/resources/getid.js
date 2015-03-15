@@ -7,3 +7,7 @@ buckutt.factory('GetId', function ($resource) {
 buckutt.factory('GetUser', function ($resource) {
 	return $resource('/api/users');
 });
+
+buckutt.factory('GetRights', function ($resource) {
+	return $resource('/api/usersrights');
+});
