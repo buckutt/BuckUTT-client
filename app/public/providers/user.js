@@ -11,8 +11,8 @@ buckutt.provider('User', [
 				getUser: function () { 
 					return _user;
 				},
-				hasRight: function(view) {
-					return _hasRight(view);
+				hasRight: function(view, point) {
+					return _hasRight(view, point);
 				},
 				isLogged: function() {
 					return _isLogged();
@@ -51,11 +51,11 @@ buckutt.provider('User', [
 			_setUser(undefined);
 		};
 
-		var _hasRight = function(view) {
+		var _hasRight = function(view, point) {
 			if(!_user) return false;
 			switch(view) {
 				case 'waiter':
-					if(_checkRight(11) || _checkRight(5)) return true;
+					if(_checkRight(11, point) || _checkRight(5)) return true;
 					return false;
 					break;
 				default:
@@ -65,11 +65,11 @@ buckutt.provider('User', [
 			return false;
 		};
 
-		var _checkRight = function(right) {
+		var _checkRight = function(right, point) {
 			if(!_user) return false;
 			for(var key in _user.UsersRights) {
 				var value = _user.UsersRights[key];
-				if(value.RightId == right) return true;
+				if((value.RightId == right && !point) || (value.RightId == right && value.PointId == point)) return true;
 			}
 			return false;
 		};
