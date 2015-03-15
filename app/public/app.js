@@ -11,6 +11,8 @@ var buckutt = angular.module('buckutt', [
             templateUrl: 'connection/connection.html'
         }).when('/waiter', {
             templateUrl: 'waiter/waiter.html'
+        }).when('/buy', {
+            templateUrl: 'buy/buy.html'
         }).otherwise({
             redirectTo: '/'
         });

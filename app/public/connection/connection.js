@@ -6,12 +6,11 @@ buckutt.controller('Connection', [
 	'$http',
 	'GetId',
 	'GetUser',
-	'GetRights',
 	'Error',
 	'User',
 	'GetLogin',
 	'jwtHelper',
-	function($scope, $location, $http, GetId, GetUser, GetRights, Error, User, GetLogin, jwtHelper) {
+	function($scope, $location, $http, GetId, GetUser, Error, User, GetLogin, jwtHelper) {
 		$scope.userPin = '';
 		$scope.savedId = '';
 
