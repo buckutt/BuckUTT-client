@@ -5,49 +5,15 @@ buckutt.controller('Waiter', [
 	'$location',
 	'GetUser',
 	'GetId',
-	'GetDevice',
-	'GetDevicePoint',
+	'Device',
 	'User',
 	'Error',
-	function($scope, $location, GetUser, GetId, GetDevice, GetDevicePoint, User, Error) {
-		if(!User.hasRight('waiter')) {
+	function($scope, $location, GetUser, GetId, Device, User, Error) {
+		if(!User.hasRight('waiter', Device.getDevicePoint())) {
 			Error('Erreur', 3);
 			$location.path("/")
 		}
-		var deviceId = 1; // TO DO: get device id from pertelian app
-		GetDevice.get({
-			device: deviceId,
-			isRemoved: false
-		},
-		function(res_api) {
-			if(res_api.data) {
-				var linkId = res_api.data.id;
-				GetDevicePoint.get({
-					DeviceId: linkId,
-					order: 'priority',
-					asc: 'DESC',
-					isRemoved: false
-				},
-				function(res_api) {
-					if(res_api.data) {
-						var pointId = getCurrentPoint(res_api.data);
-						
-					} else {
-						Error('Erreur', 4, 'DevicePoint');
-						$location.path("/");
-					}
-				});
-			} else {
-				Error('Erreur', 4, 'Device');
-				$location.path("/");
-			}
-		});
-
-		var getCurrentPoint = function(data) {
-			if(data.length >= 2) return data[0].PointId;
-			return data.PointId;
-		};
-
+		
 		$scope.autofocus = function() {
 			$scope.cardIdFocus = true;
 		};
