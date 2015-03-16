@@ -78,6 +78,8 @@ buckutt.controller('Connection', [
 						DeviceId: linkId,
 						order: 'priority',
 						asc: 'DESC',
+						embed: 'Period',
+						now: (new Date()).toISOString(),
 						isRemoved: false
 					},
 					function(res_api) {

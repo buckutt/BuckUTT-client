@@ -5,5 +5,5 @@ buckutt.factory('GetDevice', function ($resource) {
 });
 
 buckutt.factory('GetDevicePoint', function ($resource) {
-	return $resource('/api/devicespoints');
+	return $resource('/api/devicespoints?Period.startDate=<=:now&Period.endDate=>=:now');
 });
