@@ -106,7 +106,8 @@ buckutt.controller('Connection', [
 
 		$scope.log = function() {
 			GetLogin.save({
-				UserId: 9976, // Waiting for the new API-login
+				MeanOfLoginId: 4,
+				data: $scope.savedId,
 				pin: $scope.userPin
 			},
 			function(res_api) {
