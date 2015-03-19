@@ -14,11 +14,17 @@ buckutt.provider('User', [
 				hasRight: function(view, point) {
 					return _hasRight(view, point);
 				},
-				isLogged: function() {
-					return _isLogged();
-				},
 				setUser: function(user) {
 					_setUser(user);
+				},
+				logout: function() {
+					_logout();
+				},
+				logoutBuyer: function() {
+					_logoutBuyer();
+				},
+				isBuyerLogged: function() {
+					return _isBuyerLogged();
 				},
 				getBuyer: function () { 
 					return _buyer;
@@ -51,10 +57,18 @@ buckutt.provider('User', [
 			_setUser(undefined);
 		};
 
+		var _logoutBuyer = function() {
+			_setBuyer(undefined);
+		};
+
 		var _hasRight = function(view, point) {
 			if(!_user) return false;
 			switch(view) {
 				case 'waiter':
+					if(_checkRight('Seller', point) || _checkRight('droit_admin')) return true;
+					return false;
+					break;
+				case 'buy':
 					if(_checkRight('Seller', point) || _checkRight('droit_admin')) return true;
 					return false;
 					break;
@@ -74,8 +88,8 @@ buckutt.provider('User', [
 			return false;
 		};
 
-		var _isLogged = function() {
-			if(_user) return true;
+		var _isBuyerLogged = function() {
+			if(_buyer) return true;
 			return false;
 		};
 	}

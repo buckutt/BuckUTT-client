@@ -10,6 +10,8 @@ buckutt.factory('Error', [function () {
 		2: 'La carte ne correspond à aucun utilisateur.',
 		3: 'Vous n\'avez pas le droit de voir cette page, l\'utilisateur a été déconnecté.',
 		4: 'Cette borne n\'est pas enregistrée, l\'utilisateur a été déconnecté.',
+		5: 'Pas de client selectionné.',
+		6: 'Aucun article a été trouvé pour ce point.'
 	};
 	return function (title, message, comment="") {
 		$title.text(title);

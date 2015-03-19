@@ -11,6 +11,7 @@ buckutt.controller('Waiter', [
 	function($scope, $location, GetUser, GetId, Device, User, Error) {
 		if(!User.hasRight('waiter', Device.getDevicePoint())) {
 			Error('Erreur', 3);
+			User.logout();
 			$location.path("/")
 		}
 		
