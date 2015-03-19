@@ -4,7 +4,6 @@ buckutt.controller('Connection', [
 	'$scope',
 	'$location',
 	'$http',
-	'GetId',
 	'GetUser',
 	'GetDevice',
 	'GetDevicePoint',
@@ -13,7 +12,7 @@ buckutt.controller('Connection', [
 	'Device',
 	'GetLogin',
 	'jwtHelper',
-	function($scope, $location, $http, GetId, GetUser, GetDevice, GetDevicePoint, Error, User, Device, GetLogin, jwtHelper) {
+	function($scope, $location, $http, GetUser, GetDevice, GetDevicePoint, Error, User, Device, GetLogin, jwtHelper) {
 		$scope.userPin = '';
 		$scope.savedId = '';
 
@@ -39,33 +38,6 @@ buckutt.controller('Connection', [
 			else if(value == "x") $scope.userPin = $scope.userPin.substring(0,$scope.userPin.length-1);
 		}
 
-		var getUserData = function() {
-			GetId.get({
-				data: $scope.savedId,
-				isRemoved: false
-			},
-			function(res_api) {
-				if(res_api.data) {
-					GetUser.get({
-						id: res_api.data.UserId,
-						isRemoved: false
-					},
-					function(res_api) {
-						if(res_api.data) {
-							var savedUser = res_api.data;
-							savedUser.UsersRights = jwtHelper.decodeToken(User.getToken()).rights;
-							User.setUser(savedUser);
-
-							$location.path("/waiter");
-						}
-						else Error('Erreur', 2, '(user)');
-					});
-				} else {
-					Error('Erreur', 2, '(user)');
-				}
-			});
-		}
-
 		var updateDevice = function() {
 			GetDevice.get({
 				device: Device.getDeviceId(),
@@ -86,7 +58,7 @@ buckutt.controller('Connection', [
 						if(res_api.data) {
 							var pointId = getCurrentPoint(res_api.data);
 							Device.setDevicePoint(pointId);
-							getUserData();
+							$location.path("/waiter");
 						} else {
 							Error('Erreur', 4, 'DevicePoint');
 							$location.path("/");
@@ -113,6 +85,9 @@ buckutt.controller('Connection', [
 			function(res_api) {
 				if(res_api.token) {
 					User.setToken(res_api.token);
+					var savedUser = res_api.user;
+					savedUser.UsersRights = jwtHelper.decodeToken(User.getToken()).rights;
+					User.setUser(savedUser);
 					$http.defaults.headers.common.Authorization = 'Bearer '+User.getToken();
 					updateDevice();
 				} else if(res_api.error) {
