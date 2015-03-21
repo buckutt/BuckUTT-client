@@ -48,11 +48,11 @@ buckutt.controller('Buy', [
 					else if(product.type == "promotion") {
 						promotionsIds.push(product.id);
 					}
-					if(promotionsIds[0]) definePromotions(0);
-					$scope.switchCategory(currentCategory);
-					$scope.actualProducts = products[currentCategory];
-					$scope.cart = [];
 				});
+				if(promotionsIds[0]) definePromotions(0);
+				$scope.switchCategory(currentCategory);
+				$scope.actualProducts = products[currentCategory];
+				$scope.cart = [];
 			} else {
 				Error('Erreur', 6);
 				$location.path("/waiter");
@@ -62,14 +62,13 @@ buckutt.controller('Buy', [
 
 		var definePromotions = function(articleId) {
 			GetArticlesLinks.get({
-				ArticleId: articleId
+				ParentId: promotionsIds[articleId]
 			},
 			function(res_api) {
 				if(res_api.data) {
-					console.log(es_api.data);
+					
 				}
 			})
-
 			if(promotionsIds[(articleId+1)]) definePromotions(articleId+1);
 		};
 

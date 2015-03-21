@@ -5,5 +5,5 @@ buckutt.factory('GetAvailableArticles', function ($resource) {
 });
 
 buckutt.factory('GetArticlesLinks', function ($resource) {
-	return $resource('/api/articlelinks');
+	return $resource('/api/articleslinks');
 });

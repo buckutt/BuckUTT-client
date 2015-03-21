@@ -16,4 +16,7 @@ var buckutt = angular.module('buckutt', [
 		}).otherwise({
 			redirectTo: '/'
 		});
-}]);
+}])
+.run(function($templateCache) {
+	$templateCache.removeAll();
+});
