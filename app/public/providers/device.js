@@ -26,5 +26,5 @@ buckutt.provider('Device', [
 ]);
 
 buckutt.config(['DeviceProvider', function (DeviceProvider) {
-    DeviceProvider.setDeviceId(1); // TO DO : get DeviceId from pertelian app
+	DeviceProvider.setDeviceId(1); // TO DO : get DeviceId from pertelian app
 }]);
