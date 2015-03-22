@@ -29,6 +29,25 @@
 				<div class="clearfix"></div>
 			</div>
 			<div class="buyer-cart">
+				<div class="buyer-item" ng-repeat="item in cart">
+					<div class="buyer-item-inner">
+						<div class="item-remove">
+							<a href="" ng-click="deleteProduct(item, 1)">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</div>
+						<div class="item-count">
+							{{ item.quantity }}
+						</div>
+						<div class="item-name">
+							{{ item.product.name }}
+							<div class="item-promo-content-name" ng-repeat="promoProduct in item.content track by $index">{{promoProduct.name}}</div>
+						</div>
+						<div class="item-price">
+							{{ ((item.quantity*item.product.price).toFixed(2)/100).toFixed(2) }} €
+						</div>
+					</div>
+				</div>
 			</div>
 		</div><!-- @whitespace
 		--><div class="choices">

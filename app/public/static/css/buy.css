@@ -108,6 +108,50 @@
 	}
 }
 
+.buyer-item {
+	display: block;
+	background: #d5d5d5;
+	margin-top: 15px;
+}
+
+.buyer-item-inner {
+	display: table;
+	width: 100%;
+}
+.buyer-item-inner .item-name {
+	display: table-cell;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+}
+.buyer-item-inner .item-price {
+	display: table-cell;
+	font-size: 16px;
+	color: #8d8d8d;
+	font-weight: lighter;
+	width: 50px;
+}
+.buyer-item-inner .item-remove, .buyer-item-inner .item-count, .bu-user-item-inner .item-edit {
+	display: table-cell;
+	width: 35px;
+	text-align: center;
+}
+.buyer-item-inner .item-count {
+	font-size: 16px;
+	font-weight: bold;
+}
+.buyer-item-inner a {
+	display: block;
+	padding: 10px 15px;
+	background: #58a89b;
+	color: #fff;
+}
+.buyer-item-inner a:active {
+	-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+	box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+
 .choice {
 	display: inline-block;
 	width: 180px;
