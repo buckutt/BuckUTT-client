@@ -92,151 +92,151 @@ buckutt.controller('Buy', [
 			$scope.actualProducts = products[id];
 		};
 
-        var getProductById = function(id) {
-        	var foundProduct = undefined;
-            rawProducts.forEach(function(rawProduct, key) {
-                if(rawProduct.id == id) foundProduct = rawProduct;
-            });
-            return foundProduct;
-        };
+		var getProductById = function(id) {
+			var foundProduct = undefined;
+			rawProducts.forEach(function(rawProduct, key) {
+				if(rawProduct.id == id) foundProduct = rawProduct;
+			});
+			return foundProduct;
+		};
 
 
-        var getLowestLevel = function(product) {
-            if(product.ParentId == null) return product;
-            else {
-                var parent = getProductById(product.ParentId);
-                return getLowestLevel(parent);
-            }
-        };
+		var getLowestLevel = function(product) {
+			if(product.ParentId == null) return product;
+			else {
+				var parent = getProductById(product.ParentId);
+				return getLowestLevel(parent);
+			}
+		};
 
-        var isPromotion = function(product, promo) {
-            var lowerProduct = getLowestLevel(product);
-            var returnValue = false;
-            promotions[promo].forEach(function(state, key) {
-                if(state.ArticleId == lowerProduct.id) {
-                	returnValue = true;
-                }
-            });
-            return returnValue;
-        };
+		var isPromotion = function(product, promo) {
+			var lowerProduct = getLowestLevel(product);
+			var returnValue = false;
+			promotions[promo].forEach(function(state, key) {
+				if(state.ArticleId == lowerProduct.id) {
+					returnValue = true;
+				}
+			});
+			return returnValue;
+		};
 
-        var getSteps = function(product, promo) {
-            var steps = [];
-            var lowerProduct = getLowestLevel(product);
+		var getSteps = function(product, promo) {
+			var steps = [];
+			var lowerProduct = getLowestLevel(product);
 
-            promotions[promo].forEach(function(step, key) {
-                if(lowerProduct.id == step.ArticleId) {
-                    steps.push(step.step);
-                }
-            });
+			promotions[promo].forEach(function(step, key) {
+				if(lowerProduct.id == step.ArticleId) {
+					steps.push(step.step);
+				}
+			});
 
-            return steps;
-        };
+			return steps;
+		};
 
-        $scope.addProduct = function(product) {
-            var backupCart = JSON.parse(JSON.stringify($scope.cart));
-            var backupCredit = $scope.buyer.credit;
-            var backupNbCart = nbCart;
+		$scope.addProduct = function(product) {
+			var backupCart = JSON.parse(JSON.stringify($scope.cart));
+			var backupCredit = $scope.buyer.credit;
+			var backupNbCart = nbCart;
 
-            var isFound = false;
-            $scope.cart.forEach(function(item, key) {
-                if(item.product.id == product.id) {
-                    item.quantity++;
-                    isFound = true;
-                }
-            });
+			var isFound = false;
+			$scope.cart.forEach(function(item, key) {
+				if(item.product.id == product.id) {
+					item.quantity++;
+					isFound = true;
+				}
+			});
 
-            if(!isFound) {
-                $scope.cart.push({
-                    "product":product,
-                    "quantity":1
-                });
-            }
+			if(!isFound) {
+				$scope.cart.push({
+					"product":product,
+					"quantity":1
+				});
+			}
 
-            $scope.buyer.credit -= product.price;
-            nbCart++;
+			$scope.buyer.credit -= product.price;
+			nbCart++;
 
-            var uids = {};
-            var promos = {};
+			var uids = {};
+			var promos = {};
 
-            promotions.forEach(function(promotion, key) {
-                if(uids[key] == undefined) uids[key] = {};
-                if(promos[key] == undefined) promos[key] = {};
+			promotions.forEach(function(promotion, key) {
+				if(uids[key] == undefined) uids[key] = {};
+				if(promos[key] == undefined) promos[key] = {};
 
-                $scope.cart.forEach(function(item, key2) {
-                    for(var i= 1;i<=item.quantity;i++) {
-                        var steps = getSteps(item.product,key);
-                        var currentStep = steps[0];
-                        var currentUid = uids[key][currentStep];
+				$scope.cart.forEach(function(item, key2) {
+					for(var i= 1;i<=item.quantity;i++) {
+						var steps = getSteps(item.product,key);
+						var currentStep = steps[0];
+						var currentUid = uids[key][currentStep];
 
-                        steps.forEach(function(step, key2) {
-                            if(uids[key][step] < currentUid || uids[key][step] == undefined) {
-                                currentStep = step;
-                                currentUid = uids[key][currentStep];
-                            }
-                        });
+						steps.forEach(function(step, key2) {
+							if(uids[key][step] < currentUid || uids[key][step] == undefined) {
+								currentStep = step;
+								currentUid = uids[key][currentStep];
+							}
+						});
 
-                        if(uids[key][currentStep] == undefined) uids[key][currentStep] = 0;
-                        if(promos[key][uids[key][currentStep]] == undefined) promos[key][uids[key][currentStep]] = {};
-                        if(isPromotion(item.product,key) && currentStep) {
-                            promos[key][uids[key][currentStep]][currentStep] = item;
-                            uids[key][currentStep]++;
-                        }
-                    }
-                });
-            });
-
-			angular.forEach(promos, function(promo, key) {
-				angular.forEach(promo, function(uid, key2) {
-                    if(getObjectLength(uid) == nbSteps[key]) {
-                        var promoItem = {
-                            "product":getProductById(key),
-                            "quantity":1,
-                            "content":[]
-                        };
-
-                        angular.forEach(uid, function(step, key3) {
-                            promoItem.content[key3-1] = step.product;
-                            $scope.deleteProduct(step,1);
-                        });
-
-                        $scope.cart.push(promoItem);
-                        $scope.buyer.credit -= promoItem.product.price;
-                        nbCart++;
-                    }
+						if(uids[key][currentStep] == undefined) uids[key][currentStep] = 0;
+						if(promos[key][uids[key][currentStep]] == undefined) promos[key][uids[key][currentStep]] = {};
+						if(isPromotion(item.product,key) && currentStep) {
+							promos[key][uids[key][currentStep]][currentStep] = item;
+							uids[key][currentStep]++;
+						}
+					}
 				});
 			});
 
-            if($scope.buyer.credit < 0 || nbCart > 50) {
-                $scope.cart = JSON.parse(JSON.stringify(backupCart));
-                $scope.buyer.credit = backupCredit;
-                nbCart = backupNbCart;
-            }
-        };
+			angular.forEach(promos, function(promo, key) {
+				angular.forEach(promo, function(uid, key2) {
+					if(getObjectLength(uid) == nbSteps[key]) {
+						var promoItem = {
+							"product":getProductById(key),
+							"quantity":1,
+							"content":[]
+						};
 
-         $scope.deleteProduct = function(item, nbItems) {
-            var index = $scope.cart.indexOf(item);
-            if(nbItems == 'all') nbItems = $scope.cart[index].quantity;
-            if(nbItems <= $scope.cart[index].quantity) {
-                $scope.buyer.credit += item.product.price*nbItems;
-                if(nbItems == $scope.cart[index].quantity) {
-                    if(index > -1) {
-                        $scope.cart.splice(index,1);
-                    }
-                } else {
-                    $scope.cart[index].quantity -= nbItems;
-                }
-                nbCart -= nbItems;
-            }
-        };
+						angular.forEach(uid, function(step, key3) {
+							promoItem.content[key3-1] = step.product;
+							$scope.deleteProduct(step,1);
+						});
 
-	    var getObjectLength = function(object) {
-	        var count = 0;
-	        for(var i in object) {
-	            count++;
-	        }
-	        return count;
-	    };
+						$scope.cart.push(promoItem);
+						$scope.buyer.credit -= promoItem.product.price;
+						nbCart++;
+					}
+				});
+			});
+
+			if($scope.buyer.credit < 0 || nbCart > 50) {
+				$scope.cart = JSON.parse(JSON.stringify(backupCart));
+				$scope.buyer.credit = backupCredit;
+				nbCart = backupNbCart;
+			}
+		};
+
+		 $scope.deleteProduct = function(item, nbItems) {
+			var index = $scope.cart.indexOf(item);
+			if(nbItems == 'all') nbItems = $scope.cart[index].quantity;
+			if(nbItems <= $scope.cart[index].quantity) {
+				$scope.buyer.credit += item.product.price*nbItems;
+				if(nbItems == $scope.cart[index].quantity) {
+					if(index > -1) {
+						$scope.cart.splice(index,1);
+					}
+				} else {
+					$scope.cart[index].quantity -= nbItems;
+				}
+				nbCart -= nbItems;
+			}
+		};
+
+		var getObjectLength = function(object) {
+			var count = 0;
+			for(var i in object) {
+				count++;
+			}
+			return count;
+		};
 
 	}
 ]);
