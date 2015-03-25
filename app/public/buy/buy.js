@@ -238,5 +238,10 @@ buckutt.controller('Buy', [
 			return count;
 		};
 
+		$scope.logout = function() {
+			User.logoutBuyer();
+			$location.path("/waiter");
+		};
+
 	}
 ]);

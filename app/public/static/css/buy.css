@@ -1,22 +1,3 @@
-.menu-icons {
-	width:10%;
-	padding-right:10px;
-	text-align:right;
-}
-
-.logout {
-	display: inline-block;
-	padding: 17px 25px 13px 25px;
-	color: #c9c7c8;
-	font-size: 20px;
-}
-
-.logout:hover {
-	text-decoration: none;
-	color: #c9c7c8;
-	background: #413f40;
-}
-
 .buyer {
 	vertical-align: top;
 	display:inline-block;

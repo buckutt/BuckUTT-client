@@ -45,5 +45,14 @@ buckutt.controller('Waiter', [
 			} else Error('Erreur', 2, '(empty)');
 			$scope.cardId = '';
 		};
+
+		$scope.askLogout = function() {
+			$('#modalLogout').modal();
+		};
+
+		$scope.logout = function() {
+			User.logout();
+			$location.path("/");
+		};
 	}
 ]);

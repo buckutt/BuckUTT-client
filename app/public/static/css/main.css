@@ -95,6 +95,25 @@ h1, h2, h3, h4, h5, h6 {
 	background: #413f40;
 }
 
+.menu-icons {
+	width:10%;
+	padding-right:10px;
+	text-align:right;
+}
+
+.logout {
+	display: inline-block;
+	padding: 17px 25px 13px 25px;
+	color: #c9c7c8;
+	font-size: 20px;
+}
+
+.logout:hover {
+	text-decoration: none;
+	color: #c9c7c8;
+	background: #413f40;
+}
+
 .buckutt {
 	color: #c9c7c8;
 	padding: 15px 0;
