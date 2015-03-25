@@ -9,7 +9,7 @@
 			</div>
 		</div>
 		<div class="right menu-icons">
-			<a href="" ng-click="logout()" class="logout">
+			<a href="" ng-if="!cartSent" ng-click="logout()" class="logout">
 				<i class="glyphicon glyphicon-eject"></i>
 			</a>
 		</div>
@@ -20,7 +20,7 @@
 		<div class="buyer">
 			<div class="buyer-profile">
 				<div class="buyer-image">
-					<img src="assets/img/users/{{buyer.id}}.jpg?1" alt="Buyer pic"/>
+					<img src="static/images/users/{{buyer.id}}.jpg?1" alt="Buyer pic"/>
 				</div>
 				<div class="buyer-infos">
 					<strong class="buyer-name">{{ buyer.firstname }} {{ buyer.lastname }}</strong><br />
@@ -50,11 +50,15 @@
 					</div>
 				</div>
 			</div>
+			<div class="choice-send">
+				<a href="" ng-click="sendCart()" ng-if="!cartSent"><i class="glyphicon glyphicon-ok"></i></a>
+				<a href="" ng-if="cartSent"><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i></a>
+			</div>
 		</div><!-- @whitespace
 		--><div class="choices">
 			<a href="" class="choice" ng-click="addProduct(product)" ng-repeat="product in actualProducts">
 				<div class="choice-inner">
-					<div class="item-icon"><img ng-src="assets/img/products/{{ product.obj_id }}.png" alt="{{ product.obj_name }}"></div>
+					<div class="item-icon"><img ng-src="static/images/products/{{ product.obj_id }}.png" alt="{{ product.obj_name }}"></div>
 					<div class="item-infos">
 						<div class="item-name">
 							{{ product.name }}

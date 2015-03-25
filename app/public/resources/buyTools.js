@@ -7,3 +7,7 @@ buckutt.factory('GetAvailableArticles', function ($resource) {
 buckutt.factory('GetArticlesLinks', function ($resource) {
 	return $resource('/api/articleslinks');
 });
+
+buckutt.factory('PostArticles', function ($resource) {
+	return $resource('/api/services/purchase');
+});

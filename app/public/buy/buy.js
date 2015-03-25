@@ -19,6 +19,8 @@ buckutt.controller('Buy', [
 			$location.path("/waiter");
 		}
 
+		$scope.cartSent = false;
+
 		var currentCategory = "Accueil";
 		$scope.categories = [];
 		var products = {};
@@ -242,6 +244,10 @@ buckutt.controller('Buy', [
 			User.logoutBuyer();
 			$location.path("/waiter");
 		};
+
+		$scope.sendCart = function() {
+			$scope.cartSent = true;
+		}
 
 	}
 ]);
