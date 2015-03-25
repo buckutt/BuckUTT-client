@@ -4,10 +4,11 @@ buckutt.controller('Buy', [
 	'$location',
 	'GetAvailableArticles',
 	'GetArticlesLinks',
+	'PostArticles',
 	'User',
 	'Device',
 	'Error',
-	function($scope, $location, GetAvailableArticles, GetArticlesLinks, User, Device, Error) {
+	function($scope, $location, GetAvailableArticles, GetArticlesLinks, PostArticles, User, Device, Error) {
 		if(!User.hasRight('buy', Device.getDevicePoint())) {
 			Error('Erreur', 3);
 			User.logout();
@@ -142,7 +143,7 @@ buckutt.controller('Buy', [
 
 			var isFound = false;
 			$scope.cart.forEach(function(item, key) {
-				if(item.product.id == product.id) {
+				if(item.article.id == product.id) {
 					item.quantity++;
 					isFound = true;
 				}
@@ -150,7 +151,7 @@ buckutt.controller('Buy', [
 
 			if(!isFound) {
 				$scope.cart.push({
-					"product":product,
+					"article":product,
 					"quantity":1
 				});
 			}
@@ -167,7 +168,7 @@ buckutt.controller('Buy', [
 
 				$scope.cart.forEach(function(item, key2) {
 					for(var i= 1;i<=item.quantity;i++) {
-						var steps = getSteps(item.product,key);
+						var steps = getSteps(item.article,key);
 						var currentStep = steps[0];
 						var currentUid = uids[key][currentStep];
 
@@ -180,7 +181,7 @@ buckutt.controller('Buy', [
 
 						if(uids[key][currentStep] == undefined) uids[key][currentStep] = 0;
 						if(promos[key][uids[key][currentStep]] == undefined) promos[key][uids[key][currentStep]] = {};
-						if(isPromotion(item.product,key) && currentStep) {
+						if(isPromotion(item.article,key) && currentStep) {
 							promos[key][uids[key][currentStep]][currentStep] = item;
 							uids[key][currentStep]++;
 						}
@@ -192,18 +193,18 @@ buckutt.controller('Buy', [
 				angular.forEach(promo, function(uid, key2) {
 					if(getObjectLength(uid) == nbSteps[key]) {
 						var promoItem = {
-							"product":getProductById(key),
+							"article":getProductById(key),
 							"quantity":1,
 							"content":[]
 						};
 
 						angular.forEach(uid, function(step, key3) {
-							promoItem.content[key3-1] = step.product;
+							promoItem.content[key3-1] = step.article;
 							$scope.deleteProduct(step,1);
 						});
 
 						$scope.cart.push(promoItem);
-						$scope.buyer.credit -= promoItem.product.price;
+						$scope.buyer.credit -= promoItem.article.price;
 						nbCart++;
 					}
 				});
@@ -220,7 +221,7 @@ buckutt.controller('Buy', [
 			var index = $scope.cart.indexOf(item);
 			if(nbItems == 'all') nbItems = $scope.cart[index].quantity;
 			if(nbItems <= $scope.cart[index].quantity) {
-				$scope.buyer.credit += item.product.price*nbItems;
+				$scope.buyer.credit += item.article.price*nbItems;
 				if(nbItems == $scope.cart[index].quantity) {
 					if(index > -1) {
 						$scope.cart.splice(index,1);
@@ -247,7 +248,19 @@ buckutt.controller('Buy', [
 
 		$scope.sendCart = function() {
 			$scope.cartSent = true;
-		}
+			if($scope.cart.length > 0) {
+				var params = {
+					BuyerId: User.getBuyer().id,
+					SellerId: User.getUser().id,
+					PointId: Device.getDevicePoint(),
+					cart: $scope.cart
+				}
+				PostArticles.save(params, function(res_api) {
+					console.log(res_api);
+				});
+			}
 
+			$scope.logout();
+		};
 	}
 ]);

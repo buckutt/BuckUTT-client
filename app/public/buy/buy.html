@@ -41,11 +41,11 @@
 							{{ item.quantity }}
 						</div>
 						<div class="item-name">
-							{{ item.product.name }}
+							{{ item.article.name }}
 							<div class="item-promo-content-name" ng-repeat="promoProduct in item.content track by $index">{{promoProduct.name}}</div>
 						</div>
 						<div class="item-price">
-							{{ ((item.quantity*item.product.price).toFixed(2)/100).toFixed(2) }} €
+							{{ ((item.quantity*item.article.price).toFixed(2)/100).toFixed(2) }} €
 						</div>
 					</div>
 				</div>
@@ -58,7 +58,7 @@
 		--><div class="choices">
 			<a href="" class="choice" ng-click="addProduct(product)" ng-repeat="product in actualProducts">
 				<div class="choice-inner">
-					<div class="item-icon"><img ng-src="static/images/products/{{ product.obj_id }}.png" alt="{{ product.obj_name }}"></div>
+					<div class="item-icon"><img ng-src="static/images/products/{{ product.id }}.png" alt="{{ product.name }}"></div>
 					<div class="item-infos">
 						<div class="item-name">
 							{{ product.name }}
