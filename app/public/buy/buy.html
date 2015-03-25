@@ -3,6 +3,7 @@
 <div ng-controller="Buy" class="fullWindow">
 	<div class="header">
 		<div class="left menu-table">
+			<div class="menu-item buckutt">BuckUTT</div>
 			<div class="menu-item" ng-class="{active: isActive(category)}" ng-repeat="category in categories">
 				<a href="" ng-click="switchCategory(category.id)">{{ category.name }}</a>
 			</div>
