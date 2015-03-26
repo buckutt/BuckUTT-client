@@ -54,5 +54,7 @@ buckutt.controller('Waiter', [
 			User.logout();
 			$location.path("/");
 		};
+
+		$scope.autofocus();
 	}
 ]);
