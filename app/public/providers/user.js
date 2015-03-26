@@ -69,7 +69,15 @@ buckutt.provider('User', [
 					return false;
 					break;
 				case 'buy':
+					if(_checkRight('Seller', point) || _checkRight('Reloader', point) || _checkRight('droit_admin')) return true;
+					return false;
+					break;
+				case 'sell':
 					if(_checkRight('Seller', point) || _checkRight('droit_admin')) return true;
+					return false;
+					break;
+				case 'reload':
+					if(_checkRight('Reloader', point) || _checkRight('droit_admin')) return true;
 					return false;
 					break;
 				default:

@@ -11,3 +11,7 @@ buckutt.factory('GetArticlesLinks', function ($resource) {
 buckutt.factory('PostArticles', function ($resource) {
 	return $resource('/api/services/purchase');
 });
+
+buckutt.factory('PostReload', function ($resource) {
+	return $resource('/api/services/reload');
+});
