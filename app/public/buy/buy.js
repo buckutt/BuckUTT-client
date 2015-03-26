@@ -31,20 +31,29 @@ buckutt.controller('Buy', [
 		}
 
 		$scope.cartSent = false;
-
-		var currentCategory = "Accueil";
-		$scope.categories = [];
-		var products = {};
-		var rawProducts = [];
-		var promotions = [];
-		var promotionsIds = [];
-		var nbSteps = [];
-		var cart = [];
-		var nbCart = 0;
 		$scope.buyer = User.getBuyer();
+		var currentCategory = "Accueil";
+
+		// Reload tools
+		if($scope.displayReload) {
+			$scope.isSellShown = false;
+			$scope.showReload = function() {
+				$scope.isSellShown = false;
+				currentCategory = "Reload";
+			}
+		}
 
 		// Sell tools
 		if($scope.displaySell) {
+			$scope.isSellShown = true;
+			$scope.categories = [];
+			var products = {};
+			var rawProducts = [];
+			var promotions = [];
+			var promotionsIds = [];
+			var nbSteps = [];
+			var cart = [];
+			var nbCart = 0;
 			GetAvailableArticles.get({
 				PointId: Device.getDevicePoint(),
 				BuyerId: User.getBuyer().id
@@ -95,14 +104,8 @@ buckutt.controller('Buy', [
 				if(promotionsIds[(articleId+1)]) definePromotions(articleId+1);
 			};
 
-			$scope.isActive = function(category) {
-				if (category.id == currentCategory) {
-					return true;
-				}
-				return false;
-			};
-
 			$scope.switchCategory = function(id) {
+				$scope.isSellShown = true;
 				currentCategory = id;
 				$scope.actualProducts = products[id];
 			};
@@ -287,6 +290,14 @@ buckutt.controller('Buy', [
 			}
 			return count;
 		};
+
+		$scope.isActive = function(category) {
+			if (category.id == currentCategory) {
+				return true;
+			}
+			return false;
+		};
+
 
 	}
 ]);

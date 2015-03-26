@@ -58,8 +58,9 @@
 				<a href="" ng-if="cartSent"><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i></a>
 			</div>
 		</div><!-- @whitespace
-		--><div class="choices">
-			<a href="" class="choice" ng-click="addProduct(product)" ng-repeat="product in actualProducts" ng-if="displaySell">
+
+		--><div class="choices" ng-if="displaySell && isSellShown">
+			<a href="" class="choice" ng-click="addProduct(product)" ng-repeat="product in actualProducts">
 				<div class="choice-inner">
 					<div class="item-icon"><img ng-src="static/images/products/{{ product.id }}.png" alt="{{ product.name }}"></div>
 					<div class="item-infos">
@@ -72,6 +73,10 @@
 					</div>
 				</div>
 			</a>
+		</div><!-- @whitespace
+
+		--><div class="reload choices" ng-if="displayReload && !isSellShown">
+			
 		</div>
 	</div>
 </div>

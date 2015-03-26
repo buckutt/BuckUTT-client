@@ -108,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
 	font-size: 20px;
 }
 
-.logout:hover {
+.logout:hover, .logout:active {
 	text-decoration: none;
 	color: #c9c7c8;
 	background: #413f40;
