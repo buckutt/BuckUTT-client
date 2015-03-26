@@ -14,6 +14,8 @@ buckutt.controller('Waiter', [
 			User.logout();
 			$location.path("/")
 		}
+
+		$scope.cardId = '';
 		
 		$scope.autofocus = function() {
 			$scope.cardIdFocus = true;
