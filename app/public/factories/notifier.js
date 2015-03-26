@@ -13,7 +13,8 @@ buckutt.factory('Notifier', [function () {
 			4: 'Cette borne n\'est pas enregistrée, l\'utilisateur a été déconnecté.',
 			5: 'Pas de client selectionné.',
 			6: 'Aucun article a été trouvé pour ce point.',
-			7: 'Le serveur a refusé l\'enregistrement. Merci de contacter un administrateur.'
+			7: 'Le serveur a refusé l\'enregistrement. Merci de contacter un administrateur.',
+			8: 'Les points de vente sont introuvables.'
 		},
 		'notification': {
 			0: 'Message non défini.'

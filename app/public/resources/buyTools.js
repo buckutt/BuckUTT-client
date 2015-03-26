@@ -15,3 +15,7 @@ buckutt.factory('PostArticles', function ($resource) {
 buckutt.factory('PostReload', function ($resource) {
 	return $resource('/api/services/reload');
 });
+
+buckutt.factory('GetReloadTypes', function ($resource) {
+	return $resource('/api/reloadtypes');
+});

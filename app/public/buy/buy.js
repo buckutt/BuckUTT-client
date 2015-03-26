@@ -4,11 +4,13 @@ buckutt.controller('Buy', [
 	'$location',
 	'GetAvailableArticles',
 	'GetArticlesLinks',
+	'GetReloadTypes',
 	'PostArticles',
+	'PostReload',
 	'User',
 	'Device',
 	'Notifier',
-	function($scope, $location, GetAvailableArticles, GetArticlesLinks, PostArticles, User, Device, Notifier) {
+	function($scope, $location, GetAvailableArticles, GetArticlesLinks, GetReloadTypes, PostArticles, PostReload, User, Device, Notifier) {
 		if(!User.hasRight('buy', Device.getDevicePoint())) {
 			Notifier('Erreur', 'error', 3);
 			User.logout();
@@ -36,11 +38,99 @@ buckutt.controller('Buy', [
 
 		// Reload tools
 		if($scope.displayReload) {
+			$scope.isDigits = true;
+			$scope.reloadingCredit = 0;
+			$scope.reloadingCart = [];
+
+			var usefulReloads = [1, 2, 4, 7];
+			var chosenType;
 			$scope.isSellShown = false;
 			$scope.showReload = function() {
 				$scope.isSellShown = false;
 				currentCategory = "Reload";
 			}
+
+			GetReloadTypes.get({},
+			function(res_api) {
+				if(res_api.data) {
+					var reloadTypes = [];
+					res_api.data.forEach(function(type, key) {
+						if(usefulReloads.indexOf(type.id) !== -1) reloadTypes.push(type);
+						if(type.id == usefulReloads[0]) $scope.setType(type);
+					});
+					$scope.reloadTypes = reloadTypes;
+				} else {
+					Notifier('Erreur', 'error', 8);
+				}
+			});
+
+			$scope.setType = function(type) {
+				chosenType = type;
+				if(type.type == "boxes") {
+					$scope.isDigits = false;
+					$scope.reloadingCredit = 0;
+				} else {
+					$scope.isDigits = true;
+					$scope.reloadingCredit.toFixed(2);
+				}
+			};
+
+			$scope.isTypeActive = function(type) {
+				if (type == chosenType) return true;
+				return false;
+			};
+
+			$scope.changeCredit = function(value) {
+				var backupCredit = $scope.reloadingCredit;
+				if(value == 'x') {
+					$scope.reloadingCredit *= 100;
+					var modulo = $scope.reloadingCredit % 10;
+					$scope.reloadingCredit -= modulo;
+					$scope.reloadingCredit /= 1000;
+				}
+				else {
+					$scope.reloadingCredit *= 10*100;
+					$scope.reloadingCredit += value;
+					$scope.reloadingCredit /= 100;
+				}
+				$scope.reloadingCredit = $scope.reloadingCredit.toFixed(2);
+
+				if($scope.buyer.credit+$scope.reloadingCredit*100 > 10000) $scope.reloadingCredit = backupCredit;
+			};
+
+			$scope.replaceCredit = function(value) {
+				if($scope.buyer.credit+value*100 <= 10000) $scope.reloadingCredit = value;
+			};
+
+			$scope.addToCart = function() {
+				if($scope.buyer.credit+$scope.reloadingCredit*100 <= 10000) {
+					var isFound = false;
+					$scope.reloadingCart.forEach(function (reload, key) {
+						if(reload.type.id == chosenType.id) {
+							isFound = true;
+							reload.credit += $scope.reloadingCredit*100;
+						}
+					});
+
+					if(!isFound) {
+						var reload = {
+							type: chosenType,
+							credit: $scope.reloadingCredit*100
+						};
+
+						$scope.reloadingCart.push(reload);
+					}
+
+					$scope.buyer.credit = $scope.buyer.credit+$scope.reloadingCredit*100;
+					$scope.reloadingCredit = 0;
+				}
+			};
+
+			$scope.deleteReload = function(reload) {
+				var index = $scope.reloadingCart.indexOf(reload);
+				$scope.buyer.credit -= reload.credit;
+				if(index > -1) $scope.reloadingCart.splice(index,1);
+			};
 		}
 
 		// Sell tools
@@ -52,7 +142,6 @@ buckutt.controller('Buy', [
 			var promotions = [];
 			var promotionsIds = [];
 			var nbSteps = [];
-			var cart = [];
 			var nbCart = 0;
 			GetAvailableArticles.get({
 				PointId: Device.getDevicePoint(),
@@ -232,7 +321,7 @@ buckutt.controller('Buy', [
 				}
 			};
 
-			 $scope.deleteProduct = function(item, nbItems) {
+			$scope.deleteProduct = function(item, nbItems) {
 				var index = $scope.cart.indexOf(item);
 				if(nbItems == 'all') nbItems = $scope.cart[index].quantity;
 				if(nbItems <= $scope.cart[index].quantity) {

@@ -101,6 +101,16 @@ h1, h2, h3, h4, h5, h6 {
 	text-align:right;
 }
 
+@media (max-width: 1540px) {
+	.menu-icons {
+		width:180px;
+	}
+
+	.menu-table {
+		width:calc(90% - 180px);
+	}
+}
+
 .logout {
 	display: inline-block;
 	padding: 17px 25px 13px 25px;
