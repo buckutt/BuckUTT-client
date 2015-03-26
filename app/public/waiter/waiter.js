@@ -7,10 +7,10 @@ buckutt.controller('Waiter', [
 	'GetId',
 	'Device',
 	'User',
-	'Error',
-	function($scope, $location, GetUser, GetId, Device, User, Error) {
+	'Notifier',
+	function($scope, $location, GetUser, GetId, Device, User, Notifier) {
 		if(!User.hasRight('waiter', Device.getDevicePoint())) {
-			Error('Erreur', 3);
+			Notifier('Erreur', 'error', 3);
 			User.logout();
 			$location.path("/")
 		}
@@ -37,12 +37,12 @@ buckutt.controller('Waiter', [
 								User.setBuyer(res_api.data);
 								$location.path("/buy");
 							}
-							else Error('Erreur', 2, '(user)');
+							else Notifier('Erreur', 'error', 2, '(user)');
 						});
 					}
-					else Error('Erreur', 2, '(user)');
+					else Notifier('Erreur', 'error', 2, '(user)');
 				});
-			} else Error('Erreur', 2, '(empty)');
+			} else Notifier('Erreur', 'error', 2, '(empty)');
 			$scope.cardId = '';
 		};
 

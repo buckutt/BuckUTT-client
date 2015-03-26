@@ -7,16 +7,16 @@ buckutt.controller('Buy', [
 	'PostArticles',
 	'User',
 	'Device',
-	'Error',
-	function($scope, $location, GetAvailableArticles, GetArticlesLinks, PostArticles, User, Device, Error) {
+	'Notifier',
+	function($scope, $location, GetAvailableArticles, GetArticlesLinks, PostArticles, User, Device, Notifier) {
 		if(!User.hasRight('buy', Device.getDevicePoint())) {
-			Error('Erreur', 3);
+			Notifier('Erreur', 'error', 3);
 			User.logout();
 			$location.path("/");
 		}
 
 		if(!User.isBuyerLogged()) {
-			Error('Erreur', 5);
+			Notifier('Erreur', 'error', 5);
 			$location.path("/waiter");
 		}
 
@@ -61,7 +61,7 @@ buckutt.controller('Buy', [
 				$scope.actualProducts = products[currentCategory];
 				$scope.cart = [];
 			} else {
-				Error('Erreur', 6);
+				Notifier('Erreur', 'error', 6);
 				$location.path("/waiter");
 			}
 		});
@@ -256,7 +256,17 @@ buckutt.controller('Buy', [
 					cart: $scope.cart
 				}
 				PostArticles.save(params, function(res_api) {
-					console.log(res_api);
+					var totalPurchases = 0;
+					$scope.cart.forEach(function(article, key) {
+						totalPurchases+=article.article.price*article.quantity;
+					});
+
+					if(res_api.data) {
+						var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été débité de ' + (totalPurchases/100).toFixed(2) + '€.';
+						Notifier('Opérations réussies', 'whiteboard', 0, message, 1000);
+					} else {
+						Notifier('Erreur', 'error', 7);
+					}
 				});
 			}
 

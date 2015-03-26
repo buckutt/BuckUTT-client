@@ -7,12 +7,12 @@ buckutt.controller('Connection', [
 	'GetUser',
 	'GetDevice',
 	'GetDevicePoint',
-	'Error',
+	'Notifier',
 	'User',
 	'Device',
 	'GetLogin',
 	'jwtHelper',
-	function($scope, $location, $http, GetUser, GetDevice, GetDevicePoint, Error, User, Device, GetLogin, jwtHelper) {
+	function($scope, $location, $http, GetUser, GetDevice, GetDevicePoint, Notifier, User, Device, GetLogin, jwtHelper) {
 		$scope.userPin = '';
 		$scope.savedId = '';
 
@@ -25,7 +25,7 @@ buckutt.controller('Connection', [
 			if(cardId != "") {
 				$scope.savedId = cardId;
 				askForPin();
-			} else Error('Erreur', 2, '(empty)');
+			} else Notifier('Erreur', 'error', 2, '(empty)');
 			$scope.cardId = '';
 		}
 
@@ -60,12 +60,12 @@ buckutt.controller('Connection', [
 							Device.setDevicePoint(pointId);
 							$location.path("/waiter");
 						} else {
-							Error('Erreur', 4, 'DevicePoint');
+							Notifier('Erreur', 'error', 4, 'DevicePoint');
 							$location.path("/");
 						}
 					});
 				} else {
-					Error('Erreur', 4, 'Device');
+					Notifier('Erreur', 'error', 4, 'Device');
 					$location.path("/");
 				}
 			});
@@ -91,11 +91,11 @@ buckutt.controller('Connection', [
 					$http.defaults.headers.common.Authorization = 'Bearer '+User.getToken();
 					updateDevice();
 				} else if(res_api.error) {
-					Error('Erreur', 2, '(login)');
+					Notifier('Erreur', 'error', 2, '(login)');
 				}
 			},
 			function(err) {
-				Error('Erreur', 2, '(login)');
+				Notifier('Erreur', 'error', 2, '(login)');
 			});
 			$scope.userPin = '';
 		}
