@@ -14,7 +14,8 @@ buckutt.factory('Notifier', [function () {
 			5: 'Pas de client selectionné.',
 			6: 'Aucun article a été trouvé pour ce point.',
 			7: 'Le serveur a refusé l\'enregistrement. Merci de contacter un administrateur.',
-			8: 'Les points de vente sont introuvables.'
+			8: 'Les points de vente sont introuvables.',
+			9: 'Un des rechargements a échoué. Merci de contacter immédiatement un administrateur.'
 		},
 		'notification': {
 			0: 'Message non défini.'

@@ -131,6 +131,38 @@ buckutt.controller('Buy', [
 				$scope.buyer.credit -= reload.credit;
 				if(index > -1) $scope.reloadingCart.splice(index,1);
 			};
+
+			var sendReloadingCart = function() {
+				if($scope.reloadingCart.length > 0) {
+					var nbReloads = $scope.reloadingCart.length;
+					var nbFeedbacks = 0;
+					var totalReloads = 0;
+					$scope.reloadingCart.forEach(function(reload, key) {
+						var params = {
+							BuyerId: User.getBuyer().id,
+							OperatorId: User.getUser().id,
+							PointId: Device.getDevicePoint(),
+							credit: reload.credit,
+							ReloadTypeId: reload.type.id
+						};
+						PostReload.save(params, function(res_api) {
+							if(res_api.id) {
+								nbFeedbacks++;
+								totalReloads+=reload.credit;
+
+								if(nbFeedbacks == nbReloads) {
+									if($scope.displaySell) sendBuyingCart(totalReloads);
+									else {
+										var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été crédité de ' + (totalReloads/100).toFixed(2) + '€.';
+										Notifier('Opérations réussies', 'whiteboard', 0, message, 2000);
+									}
+								}
+							} else Notifier('Erreur', 'error', 9);
+						});
+					});
+				} else if($scope.displaySell) sendBuyingCart();
+				else $scope.logout();
+			};
 		}
 
 		// Sell tools
@@ -336,6 +368,37 @@ buckutt.controller('Buy', [
 					nbCart -= nbItems;
 				}
 			};
+
+			var sendBuyingCart = function(totalReloads=0) {
+				if($scope.cart.length > 0) {
+					var params = {
+						BuyerId: User.getBuyer().id,
+						SellerId: User.getUser().id,
+						PointId: Device.getDevicePoint(),
+						cart: $scope.cart
+					}
+					PostArticles.save(params, function(res_api) {
+						var totalPurchases = 0;
+						$scope.cart.forEach(function(article, key) {
+							totalPurchases+=article.article.price*article.quantity;
+						});
+
+						if(res_api.data) {
+							var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été débité de ' + (totalPurchases/100).toFixed(2) + '€.';
+							if(totalReloads > 0) message += ' et crédité de ' + (totalReloads/100).toFixed(2) + '€.';
+							Notifier('Opérations réussies', 'whiteboard', 0, message, 2000);
+						} else {
+							Notifier('Erreur', 'error', 7, '(buying)');
+						}
+					});
+				} else {
+					var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été crédité de ' + (totalReloads/100).toFixed(2) + '€.';
+					Notifier('Opérations réussies', 'whiteboard', 0, message, 2000);
+				}
+
+				$scope.logout();
+			};
+
 		}
 
 		// Both sell and reload tools
@@ -347,29 +410,9 @@ buckutt.controller('Buy', [
 
 		$scope.sendCart = function() {
 			$scope.cartSent = true;
-			if($scope.cart.length > 0) {
-				var params = {
-					BuyerId: User.getBuyer().id,
-					SellerId: User.getUser().id,
-					PointId: Device.getDevicePoint(),
-					cart: $scope.cart
-				}
-				PostArticles.save(params, function(res_api) {
-					var totalPurchases = 0;
-					$scope.cart.forEach(function(article, key) {
-						totalPurchases+=article.article.price*article.quantity;
-					});
-
-					if(res_api.data) {
-						var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été débité de ' + (totalPurchases/100).toFixed(2) + '€.';
-						Notifier('Opérations réussies', 'whiteboard', 0, message, 1000);
-					} else {
-						Notifier('Erreur', 'error', 7);
-					}
-				});
-			}
-
-			$scope.logout();
+			if($scope.displaySell && !$scope.displayReload) sendBuyingCart();
+			if($scope.displaySell && $scope.displayReload) sendReloadingCart();
+			if(!$scope.displaySell && $scope.displayReload) sendReloadingCart();
 		};
 
 		var getObjectLength = function(object) {
