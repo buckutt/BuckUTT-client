@@ -19,4 +19,5 @@ var buckutt = angular.module('buckutt', [
 }])
 .run(function($templateCache) {
 	$templateCache.removeAll();
+	$(document).mousedown(function(){return false;});
 });
