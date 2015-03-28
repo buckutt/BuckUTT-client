@@ -11,3 +11,7 @@ buckutt.factory('GetUser', function ($resource) {
 buckutt.factory('GetRights', function ($resource) {
 	return $resource('/api/usersrights');
 });
+
+buckutt.factory('GetLogin', function ($resource) {
+	return $resource('/api/services/login');
+});
