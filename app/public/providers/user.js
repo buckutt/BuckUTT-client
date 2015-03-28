@@ -5,6 +5,11 @@ buckutt.provider('User', [
 		var _token = undefined;
 		var _user = undefined;
 		var _buyer = undefined;
+		var _lastBuyerData = {
+			buyer: undefined,
+			buy: undefined,
+			reload: undefined
+		};
 
 		this.$get = function() {
 			return {
@@ -37,8 +42,34 @@ buckutt.provider('User', [
 				},
 				setToken: function (token) { 
 					_setToken(token);
+				},
+				setLastBuyer: function(buyer) {
+					_setLastBuyer(buyer);
+					_setLastBuyerBuy(undefined);
+					_setLastBuyerReload(undefined);
+				},
+				setLastBuyerBuy: function(buy) {
+					_setLastBuyerBuy(buy);
+				},
+				setLastBuyerReload: function(reload) {
+					_setLastBuyerReload(reload);
+				},
+				getLastBuyerData: function() {
+					return _lastBuyerData;
 				}
 			}
+		};
+
+		var _setLastBuyer = function(buyer) {
+			_lastBuyerData.buyer = buyer;
+		};
+
+		var _setLastBuyerBuy = function(buy) {
+			_lastBuyerData.buy = buy;
+		};
+
+		var _setLastBuyerReload = function(reload) {
+			_lastBuyerData.reload = reload;
 		};
 
 		var _setUser = function(data) {

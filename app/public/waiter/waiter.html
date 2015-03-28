@@ -38,5 +38,11 @@
 		<form>
 			<input type="text" ng-enter="pressEnter()" ng-model="cardId" id="cardId" class="hiddenElement" focus-me="cardIdFocus"/>
 		</form>
+
+		<div class="resume" ng-if="lastBuyerData.buyer">
+			Dernière transaction par {{ lastBuyerData.buyer.firstname }} {{ lastBuyerData.buyer.lastname }}<br />
+			<span ng-if="lastBuyerData.buy">Débit: {{ lastBuyerData.buy }}€</span><br />
+			<span ng-if="lastBuyerData.reload">Crédit: {{ lastBuyerData.reload }}€</span>
+		</div>
 	</div>
 </div>

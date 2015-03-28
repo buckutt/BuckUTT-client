@@ -151,11 +151,8 @@ buckutt.controller('Buy', [
 								totalReloads+=reload.credit;
 
 								if(nbFeedbacks == nbReloads) {
+									User.setLastBuyerReload((totalReloads/100).toFixed(2));
 									if($scope.displaySell) sendBuyingCart(totalReloads);
-									else {
-										var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été crédité de ' + (totalReloads/100).toFixed(2) + '€.';
-										Notifier('Opérations réussies', 'whiteboard', 0, message, 2000);
-									}
 								}
 							} else Notifier('Erreur', 'error', 9);
 						});
@@ -384,16 +381,11 @@ buckutt.controller('Buy', [
 						});
 
 						if(res_api.data) {
-							var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été débité de ' + (totalPurchases/100).toFixed(2) + '€.';
-							if(totalReloads > 0) message += ' et crédité de ' + (totalReloads/100).toFixed(2) + '€.';
-							Notifier('Opérations réussies', 'whiteboard', 0, message, 2000);
+							User.setLastBuyerBuy((totalPurchases/100).toFixed(2));
 						} else {
 							Notifier('Erreur', 'error', 7, '(buying)');
 						}
 					});
-				} else {
-					var message = $scope.buyer.firstname + ' ' + $scope.buyer.lastname + ' a bien été crédité de ' + (totalReloads/100).toFixed(2) + '€.';
-					Notifier('Opérations réussies', 'whiteboard', 0, message, 2000);
 				}
 
 				$scope.logout();
@@ -410,6 +402,7 @@ buckutt.controller('Buy', [
 
 		$scope.sendCart = function() {
 			$scope.cartSent = true;
+			User.setLastBuyer($scope.buyer);
 			if($scope.displaySell && !$scope.displayReload) sendBuyingCart();
 			if($scope.displaySell && $scope.displayReload) sendReloadingCart();
 			if(!$scope.displaySell && $scope.displayReload) sendReloadingCart();

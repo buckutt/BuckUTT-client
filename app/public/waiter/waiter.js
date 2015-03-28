@@ -16,6 +16,7 @@ buckutt.controller('Waiter', [
 		}
 
 		$scope.cardId = '';
+		$scope.lastBuyerData = User.getLastBuyerData();
 		
 		$scope.autofocus = function() {
 			$scope.cardIdFocus = true;
