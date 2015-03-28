@@ -1,0 +1,7 @@
+buckutt.constant("config", {
+	"user": {
+		"minCredit": 0,
+		"maxCredit": 10000
+	},
+	"cartSize": 50
+});

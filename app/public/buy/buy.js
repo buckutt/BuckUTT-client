@@ -1,5 +1,6 @@
 'use strict';
 buckutt.controller('Buy', [
+	'config',
 	'$scope',
 	'$location',
 	'GetAvailableArticles',
@@ -10,7 +11,7 @@ buckutt.controller('Buy', [
 	'User',
 	'Device',
 	'Notifier',
-	function($scope, $location, GetAvailableArticles, GetArticlesLinks, GetReloadTypes, PostArticles, PostReload, User, Device, Notifier) {
+	function(config, $scope, $location, GetAvailableArticles, GetArticlesLinks, GetReloadTypes, PostArticles, PostReload, User, Device, Notifier) {
 		if(!User.hasRight('buy', Device.getDevicePoint())) {
 			Notifier('Erreur', 'error', 3);
 			User.logout();
@@ -95,7 +96,7 @@ buckutt.controller('Buy', [
 				}
 				$scope.reloadingCredit = $scope.reloadingCredit.toFixed(2);
 
-				if($scope.buyer.credit+$scope.reloadingCredit*100 > 10000) $scope.reloadingCredit = backupCredit;
+				if($scope.buyer.credit+$scope.reloadingCredit*100 > config.user.maxCredit) $scope.reloadingCredit = backupCredit;
 			};
 
 			$scope.replaceCredit = function(value) {
@@ -103,7 +104,7 @@ buckutt.controller('Buy', [
 			};
 
 			$scope.addToCart = function() {
-				if($scope.buyer.credit+$scope.reloadingCredit*100 <= 10000) {
+				if($scope.buyer.credit+$scope.reloadingCredit*100 <= config.user.maxCredit) {
 					var isFound = false;
 					$scope.reloadingCart.forEach(function (reload, key) {
 						if(reload.type.id == chosenType.id) {
@@ -134,7 +135,7 @@ buckutt.controller('Buy', [
 				$scope.buyer.credit -= reload.credit;
 				if(index > -1) $scope.reloadingCart.splice(index,1);
 
-				if($scope.buyer.credit < 0) {
+				if($scope.buyer.credit < config.user.minCredit) {
 					$scope.reloadingCart = JSON.parse(JSON.stringify(backupReloadingCart));
 					$scope.buyer.credit = backupCredit;
 				}
@@ -351,7 +352,7 @@ buckutt.controller('Buy', [
 					});
 				});
 
-				if($scope.buyer.credit < 0 || nbCart > 50) {
+				if($scope.buyer.credit < config.user.minCredit || nbCart > config.cartSize) {
 					$scope.cart = JSON.parse(JSON.stringify(backupCart));
 					$scope.buyer.credit = backupCredit;
 					nbCart = backupNbCart;
@@ -377,7 +378,7 @@ buckutt.controller('Buy', [
 					nbCart -= nbItems;
 				}
 
-				if($scope.buyer.credit > 10000) {
+				if($scope.buyer.credit > config.user.maxCredit) {
 					$scope.cart = JSON.parse(JSON.stringify(backupCart));
 					$scope.buyer.credit = backupCredit;
 					nbCart = backupNbCart;
