@@ -127,9 +127,17 @@ buckutt.controller('Buy', [
 			};
 
 			$scope.deleteReload = function(reload) {
+				var backupReloadingCart = JSON.parse(JSON.stringify($scope.reloadingCart));
+				var backupCredit = $scope.buyer.credit;
+
 				var index = $scope.reloadingCart.indexOf(reload);
 				$scope.buyer.credit -= reload.credit;
 				if(index > -1) $scope.reloadingCart.splice(index,1);
+
+				if($scope.buyer.credit < 0) {
+					$scope.reloadingCart = JSON.parse(JSON.stringify(backupReloadingCart));
+					$scope.buyer.credit = backupCredit;
+				}
 			};
 
 			var sendReloadingCart = function() {
@@ -351,6 +359,10 @@ buckutt.controller('Buy', [
 			};
 
 			$scope.deleteProduct = function(item, nbItems) {
+				var backupCart = JSON.parse(JSON.stringify($scope.cart));
+				var backupCredit = $scope.buyer.credit;
+				var backupNbCart = nbCart;
+
 				var index = $scope.cart.indexOf(item);
 				if(nbItems == 'all') nbItems = $scope.cart[index].quantity;
 				if(nbItems <= $scope.cart[index].quantity) {
@@ -363,6 +375,12 @@ buckutt.controller('Buy', [
 						$scope.cart[index].quantity -= nbItems;
 					}
 					nbCart -= nbItems;
+				}
+
+				if($scope.buyer.credit > 10000) {
+					$scope.cart = JSON.parse(JSON.stringify(backupCart));
+					$scope.buyer.credit = backupCredit;
+					nbCart = backupNbCart;
 				}
 			};
 
@@ -380,10 +398,10 @@ buckutt.controller('Buy', [
 							totalPurchases+=article.article.price*article.quantity;
 						});
 
-						if(res_api.data) {
+						if(!res_api.error) {
 							User.setLastBuyerBuy((totalPurchases/100).toFixed(2));
 						} else {
-							Notifier('Erreur', 'error', 7, '(buying)');
+							Notifier('Erreur', 'error', 7, res_api.error.type.message);
 						}
 					});
 				}
