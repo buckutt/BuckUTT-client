@@ -3,5 +3,13 @@ buckutt.constant("config", {
 		"minCredit": 0,
 		"maxCredit": 10000
 	},
-	"cartSize": 50
+	"cartSize": 50,
+	"groupsRules": [
+		{
+			"field": "GroupId",
+			"condition": "equals",
+			"value": 1,
+			"display": "BDE"
+		}
+	]
 });

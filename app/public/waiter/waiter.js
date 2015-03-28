@@ -5,10 +5,11 @@ buckutt.controller('Waiter', [
 	'$location',
 	'GetUser',
 	'GetId',
+	'GetGroups',
 	'Device',
 	'User',
 	'Notifier',
-	function($scope, $location, GetUser, GetId, Device, User, Notifier) {
+	function($scope, $location, GetUser, GetId, GetGroups, Device, User, Notifier) {
 		if(!User.hasRight('waiter', Device.getDevicePoint())) {
 			Notifier('Erreur', 'error', 3);
 			User.logout();
@@ -30,15 +31,26 @@ buckutt.controller('Waiter', [
 					isRemoved: false
 				},
 				function(res_api) {
-					if(res_api.data) {
+					if(!res_api.error) {
 						GetUser.get({
 							id: res_api.data.UserId,
 							isRemoved: false
 						},
-						function(res_api) {
-							if(res_api.data) {
-								User.setBuyer(res_api.data);
-								$location.path("/buy");
+						function(res_api2) {
+							if(!res_api2.error) {
+								User.setBuyer(res_api2.data);
+								GetGroups.get({
+									UserId: res_api2.data.id,
+									now: (new Date()).toISOString(),
+									isRemoved: false,
+									embed: 'Period'
+								},
+								function(res_api3) {
+									if(!res_api3.error) {
+										User.setBuyerGroups(res_api3.data);
+										$location.path("/buy");
+									} else Notifier('Erreur', 'error', 10);
+								});
 							}
 							else Notifier('Erreur', 'error', 2, '(user)');
 						});

@@ -37,6 +37,9 @@ buckutt.provider('User', [
 				setBuyer: function (buyer) { 
 					_setBuyer(buyer);
 				},
+				setBuyerGroups: function (groups) { 
+					_setBuyerGroups(groups);
+				},
 				getToken: function () { 
 					return _token;
 				},
@@ -59,6 +62,10 @@ buckutt.provider('User', [
 				}
 			}
 		};
+
+		var _setBuyerGroups = function(groups) {
+			_buyer.groups = groups;
+		}
 
 		var _setLastBuyer = function(buyer) {
 			_lastBuyerData.buyer = buyer;

@@ -23,6 +23,7 @@ buckutt.controller('Buy', [
 			$location.path("/waiter");
 		}
 
+		// Both sell and reload tools
 		$scope.displayReload = false;
 		$scope.displaySell = false;
 
@@ -36,6 +37,47 @@ buckutt.controller('Buy', [
 		$scope.cartSent = false;
 		$scope.buyer = User.getBuyer();
 		var currentCategory = "Accueil";
+		$scope.groupDisplayed = "";
+
+		if(config.groupsRules.length > 0 && $scope.buyer.groups) {
+			config.groupsRules.forEach(function(rule, key) {
+				$scope.buyer.groups.forEach(function(group, key2) {
+					switch(rule.condition) {
+						case "equals":
+							if(group[rule.field] == rule.value) $scope.groupDisplayed = rule.display;
+							break;
+					}
+				});
+			});
+		}
+
+		$scope.logout = function() {
+			User.logoutBuyer();
+			$location.path("/waiter");
+		};
+
+		$scope.sendCart = function() {
+			$scope.cartSent = true;
+			User.setLastBuyer($scope.buyer);
+			if($scope.displaySell && !$scope.displayReload) sendBuyingCart();
+			if($scope.displaySell && $scope.displayReload) sendReloadingCart();
+			if(!$scope.displaySell && $scope.displayReload) sendReloadingCart();
+		};
+
+		var getObjectLength = function(object) {
+			var count = 0;
+			for(var i in object) {
+				count++;
+			}
+			return count;
+		};
+
+		$scope.isActive = function(category) {
+			if (category.id == currentCategory) {
+				return true;
+			}
+			return false;
+		};
 
 		// Reload tools
 		if($scope.displayReload) {
@@ -411,37 +453,6 @@ buckutt.controller('Buy', [
 			};
 
 		}
-
-		// Both sell and reload tools
-
-		$scope.logout = function() {
-			User.logoutBuyer();
-			$location.path("/waiter");
-		};
-
-		$scope.sendCart = function() {
-			$scope.cartSent = true;
-			User.setLastBuyer($scope.buyer);
-			if($scope.displaySell && !$scope.displayReload) sendBuyingCart();
-			if($scope.displaySell && $scope.displayReload) sendReloadingCart();
-			if(!$scope.displaySell && $scope.displayReload) sendReloadingCart();
-		};
-
-		var getObjectLength = function(object) {
-			var count = 0;
-			for(var i in object) {
-				count++;
-			}
-			return count;
-		};
-
-		$scope.isActive = function(category) {
-			if (category.id == currentCategory) {
-				return true;
-			}
-			return false;
-		};
-
 
 	}
 ]);

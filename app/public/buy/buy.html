@@ -27,7 +27,7 @@
 				</div>
 				<div class="buyer-infos">
 					<strong class="buyer-name">{{ buyer.firstname }} {{ buyer.lastname }}</strong><br />
-					<small class="buyer-surname">{{ buyer.nickname }}</small><br />
+					<small class="buyer-surname">{{ groupDisplayed }} {{ buyer.nickname }}</small><br />
 					<span class="buyer-credit">{{ (buyer.credit/100).toFixed(2) }} €</span>
 				</div>
 				<div class="clearfix"></div>
