@@ -70,7 +70,7 @@
 			</div>
 			<div class="choice-send">
 				<a href="" ng-click="sendCart()" ng-if="!cartSent"><i class="glyphicon glyphicon-ok"></i></a>
-				<a href="" ng-if="cartSent"><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i></a>
+				<a href="" ng-if="cartSent"><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i> <span ng-if="sendingStatus">{{ sendingStatus }}</span></a>
 			</div>
 		</div><!-- @whitespace
 

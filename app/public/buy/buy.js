@@ -27,6 +27,7 @@ buckutt.controller('Buy', [
 		// Both sell and reload tools
 		$scope.displayReload = false;
 		$scope.displaySell = false;
+		$scope.sendingStatus;
 
 		if(User.hasRight('sell', Device.getDevicePoint())) {
 			$scope.displaySell = true;
@@ -186,6 +187,7 @@ buckutt.controller('Buy', [
 
 			var sendReloadingCart = function() {
 				if($scope.reloadingCart.length > 0) {
+					$scope.sendingStatus = 'Rechargement...';
 					var nbReloads = $scope.reloadingCart.length;
 					var nbFeedbacks = 0;
 					var totalReloads = 0;
@@ -430,6 +432,7 @@ buckutt.controller('Buy', [
 
 			var sendBuyingCart = function(totalReloads=0) {
 				if($scope.cart.length > 0) {
+					$scope.sendingStatus = 'Achats...';
 					var params = {
 						BuyerId: User.getBuyer().id,
 						SellerId: User.getUser().id,
@@ -448,6 +451,7 @@ buckutt.controller('Buy', [
 								if(config.payRule) {
 									var hasToSend = hasToSendToPay(article);
 									if(hasToSend) {
+										$scope.sendingStatus = 'Envoi à Pay...';
 										waiter++;
 										var paramsPay = {
 											"user": {
