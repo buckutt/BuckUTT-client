@@ -12,9 +12,22 @@ http.createServer(function(req,res){
 
 function toAPI(req, res) {
 	var urlContent = req.url.split('/');
-	if(urlContent[1] == config.backend.path) {
+
+	var path = urlContent.slice(2,urlContent.length).join('/');
+
+	if(urlContent[1] == config.backend.requiredPath) {
+		req.url = req.url.replace(config.backend.requiredPath, config.backend.path);
 		proxy.web(req, res, {
-			target: config.backend.host+':'config.backend.port
+			target: 'http://'+config.backend.host+':'+config.backend.port
+		}, function(e) {
+			console.log("Connection to API failed");
+		});
+	} else if(urlContent[1] == config.pay.requiredPath && (config.pay.whitelist.length == 0 || config.pay.whitelist.indexOf(path) > -1)) {
+		req.url = req.url.replace(config.pay.requiredPath, config.pay.path);
+		proxy.web(req, res, {
+			target: 'http://'+config.pay.host+':'+config.pay.port
+		}, function(e) {
+			console.log("Connection to pay failed");
 		});
 	} else {
 		file.serve(req, res, function (err, result) {
