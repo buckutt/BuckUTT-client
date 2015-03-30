@@ -8,10 +8,11 @@ buckutt.controller('Buy', [
 	'GetReloadTypes',
 	'PostArticles',
 	'PostReload',
+	'PostBuy',
 	'User',
 	'Device',
 	'Notifier',
-	function(config, $scope, $location, GetAvailableArticles, GetArticlesLinks, GetReloadTypes, PostArticles, PostReload, User, Device, Notifier) {
+	function(config, $scope, $location, GetAvailableArticles, GetArticlesLinks, GetReloadTypes, PostArticles, PostReload, PostBuy, User, Device, Notifier) {
 		if(!User.hasRight('buy', Device.getDevicePoint())) {
 			Notifier('Erreur', 'error', 3);
 			User.logout();
@@ -436,20 +437,68 @@ buckutt.controller('Buy', [
 						cart: $scope.cart
 					}
 					PostArticles.save(params, function(res_api) {
-						var totalPurchases = 0;
-						$scope.cart.forEach(function(article, key) {
-							totalPurchases+=article.article.price*article.quantity;
-						});
-
 						if(!res_api.error) {
-							User.setLastBuyerBuy((totalPurchases/100).toFixed(2));
+							if(res_api.data.date) var purchaseDate = res_api.data.date;
+							else var purchaseDate = res_api.data[0].date;
+							var totalPurchases = 0;
+							var waiter = 0;
+							var loaded = 0;
+							$scope.cart.forEach(function(article, key) {
+								totalPurchases+=article.article.price*article.quantity;
+								if(config.payRule) {
+									var hasToSend = hasToSendToPay(article);
+									if(hasToSend) {
+										waiter++;
+										var paramsPay = {
+											"user": {
+												"id": $scope.buyer.id,
+												"firstname": $scope.buyer.firstname,
+												"lastname": $scope.buyer.lastname,
+												"mail": $scope.buyer.mail
+											},
+											"article": {
+												"id": article.article.id
+											},
+											"price" : {
+												"id": article.article.PriceId
+											},
+											"purchase": {
+												"date": new Date(purchaseDate)
+											}
+										};
+										PostBuy.save(paramsPay, function(res_api2) {
+											loaded++;
+
+											if(loaded == waiter) {
+												User.setLastBuyerBuy((totalPurchases/100).toFixed(2));
+												$scope.logout();
+											}
+										});
+									}
+								}
+							});
+							if(waiter == 0) {
+								User.setLastBuyerBuy((totalPurchases/100).toFixed(2));
+								$scope.logout();
+							}
 						} else {
 							Notifier('Erreur', 'error', 7, res_api.error.type.message);
+							$scope.logout();
 						}
 					});
-				}
+				} else $scope.logout();
+			};
 
-				$scope.logout();
+			var hasToSendToPay = function(article) {
+				switch(config.payRule.condition) {
+					case 'equals':
+						if(config.payRule.value == article.article.PeriodName) return true;
+						break;
+					case 'startsWith':
+						if(article.article.PeriodName.indexOf(config.payRule.value) == 0) return true;
+						break;
+				}
+				return false;
 			};
 
 		}

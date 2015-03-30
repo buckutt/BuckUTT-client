@@ -11,5 +11,9 @@ buckutt.constant("config", {
 			"value": 1,
 			"display": "BDE"
 		}
-	]
+	],
+	"payRule": {
+		"condition": "startsWith",
+		"value": "Ventes pay - "
+	}
 });
