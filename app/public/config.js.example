@@ -15,5 +15,10 @@ buckutt.constant("config", {
 	"payRule": {
 		"condition": "startsWith",
 		"value": "Ventes pay - "
+	},
+	"deviceId": {
+		method: "script",
+		defaultValue: 1,
+		port: 8006
 	}
 });

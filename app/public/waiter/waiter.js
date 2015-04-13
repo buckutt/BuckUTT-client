@@ -31,13 +31,13 @@ buckutt.controller('Waiter', [
 					isRemoved: false
 				},
 				function(res_api) {
-					if(!res_api.error) {
+					if(!res_api.error && res_api.data) {
 						GetUser.get({
 							id: res_api.data.UserId,
 							isRemoved: false
 						},
 						function(res_api2) {
-							if(!res_api2.error) {
+							if(!res_api2.error && res_api2.data) {
 								User.setBuyer(res_api2.data);
 								GetGroups.get({
 									UserId: res_api2.data.id,
@@ -46,7 +46,7 @@ buckutt.controller('Waiter', [
 									embed: 'Period'
 								},
 								function(res_api3) {
-									if(!res_api3.error) {
+									if(!res_api3.error && res_api3.data) {
 										User.setBuyerGroups(res_api3.data);
 										$location.path("/buy");
 									} else Notifier('Erreur', 'error', 10);

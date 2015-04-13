@@ -17,7 +17,18 @@ var buckutt = angular.module('buckutt', [
 			redirectTo: '/'
 		});
 }])
-.run(function($templateCache) {
-	$templateCache.removeAll();
-	$(document).mousedown(function(){return false;});
+.run(function(GetDeviceId, config, Device) {
+	switch(config.deviceId.method) {
+		case "script":
+			GetDeviceId.get({}, function(res_api) {
+				if(res_api.device) {
+					Device.setDeviceId(res_api.device);
+				}
+			});
+			break;
+		default:
+			deviceId = config.deviceId.defaultValue;
+			Device.setDeviceId(deviceId);
+			break;
+	}
 });

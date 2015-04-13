@@ -43,13 +43,15 @@ buckutt.controller('Buy', [
 
 		if(config.groupsRules.length > 0 && $scope.buyer.groups) {
 			config.groupsRules.forEach(function(rule, key) {
-				$scope.buyer.groups.forEach(function(group, key2) {
-					switch(rule.condition) {
-						case "equals":
-							if(group[rule.field] == rule.value) $scope.groupDisplayed = rule.display;
-							break;
-					}
-				});
+				if($scope.buyer.groups.length > 0) {
+					$scope.buyer.groups.forEach(function(group, key2) {
+						switch(rule.condition) {
+							case "equals":
+								if(group[rule.field] == rule.value) $scope.groupDisplayed = rule.display;
+								break;
+						}
+					});
+				}
 			});
 		}
 
