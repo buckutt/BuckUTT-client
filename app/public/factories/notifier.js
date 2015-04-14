@@ -23,7 +23,7 @@ buckutt.factory('Notifier', [function () {
 		}
 	};
 
-	return function (title, type, message, comment="", timeout) {
+	return function (title, type, message, comment, timeout) {
 		$title.text(title);
 		if(type != 'whiteboard') $content.text(msgCodes[type][message] + " " + comment);
 		else $content.html(comment);
