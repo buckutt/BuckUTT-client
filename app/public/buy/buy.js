@@ -432,7 +432,7 @@ buckutt.controller('Buy', [
 				}
 			};
 
-			var sendBuyingCart = function(totalReloads=0) {
+			var sendBuyingCart = function(totalReloads) {
 				if($scope.cart.length > 0) {
 					$scope.sendingStatus = 'Achats...';
 					var params = {
