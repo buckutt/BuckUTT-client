@@ -297,7 +297,8 @@ buckutt.controller('Buy', [
 				if(product.ParentId == null) return product;
 				else {
 					var parent = getProductById(product.ParentId);
-					return getLowestLevel(parent);
+					if(parent == null) return product;
+					else return getLowestLevel(parent);
 				}
 			};
 
