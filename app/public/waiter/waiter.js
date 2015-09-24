@@ -3,13 +3,14 @@
 buckutt.controller('Waiter', [
 	'$scope',
 	'$location',
+	'$timeout',
 	'GetUser',
 	'GetId',
 	'GetGroups',
 	'Device',
 	'User',
 	'Notifier',
-	function($scope, $location, GetUser, GetId, GetGroups, Device, User, Notifier) {
+	function($scope, $location, $timeout, GetUser, GetId, GetGroups, Device, User, Notifier) {
 		if(!User.hasRight('waiter', Device.getDevicePoint())) {
 			Notifier('Erreur', 'error', 3);
 			User.logout();
@@ -67,7 +68,7 @@ buckutt.controller('Waiter', [
 
 		$scope.logout = function() {
 			User.logout();
-			$location.path("/");
+			$timeout(function() { $location.path("/"); }, 1000);
 		};
 
 		$scope.autofocus();

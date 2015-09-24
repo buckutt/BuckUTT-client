@@ -11,6 +11,7 @@
 	width:100%;
 	display: table;
 	margin-top:10px;
+	height:70px;
 }
 
 .buyer-image {
@@ -60,7 +61,7 @@
 }
 
 .buyer-cart {
-	height:calc(100% - 161px);
+	height:calc(100% - 80px - 103px);
 	padding-top:15px;
 }
 
