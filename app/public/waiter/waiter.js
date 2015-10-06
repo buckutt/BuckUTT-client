@@ -20,10 +20,6 @@ buckutt.controller('Waiter', [
 		$scope.cardId = '';
 		$scope.lastBuyerData = User.getLastBuyerData();
 		
-		$scope.autofocus = function() {
-			$scope.cardIdFocus = true;
-		};
-
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
 			if(cardId != "") {
@@ -71,6 +67,11 @@ buckutt.controller('Waiter', [
 			$timeout(function() { $location.path("/"); }, 1000);
 		};
 
-		$scope.autofocus();
+		var giveBackFocus = function () {
+			angular.element('[focus-me]')[0].focus();
+			setTimeout(giveBackFocus, 200);
+		};
+
+		giveBackFocus();
 	}
 ]);

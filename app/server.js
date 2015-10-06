@@ -3,7 +3,7 @@ httpProxy = require('http-proxy');
 var static = require('node-static');
 var config = require('./config.json');
 
-var file = new static.Server('./public');
+var file = new static.Server('./app/public');
 
 var proxy = httpProxy.createProxyServer();
 http.createServer(function(req,res){

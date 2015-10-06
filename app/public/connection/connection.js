@@ -16,10 +16,6 @@ buckutt.controller('Connection', [
 		$scope.userPin = '';
 		$scope.savedId = '';
 
-		$scope.autofocus = function() {
-			$scope.cardIdFocus = true;
-		}
-
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
 			if(cardId != "") {
@@ -61,12 +57,10 @@ buckutt.controller('Connection', [
 							$location.path("/waiter");
 						} else {
 							Notifier('Erreur', 'error', 4, 'DevicePoint');
-							$location.path("/");
 						}
 					});
 				} else {
 					Notifier('Erreur', 'error', 4, 'Device');
-					$location.path("/");
 				}
 			});
 		}
@@ -105,6 +99,11 @@ buckutt.controller('Connection', [
 			$scope.userPin = '';
 		}
 
-		$scope.autofocus();
+		var giveBackFocus = function () {
+                        angular.element('[focus-me]')[0].focus();
+			setTimeout(giveBackFocus, 200);
+		};
+
+		giveBackFocus();
 	}
 ]);

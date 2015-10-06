@@ -103,11 +103,11 @@ buckutt.provider('User', [
 			if(!_user) return false;
 			switch(view) {
 				case 'waiter':
-					if(_checkRight('Seller', point) || _checkRight('Reloader', point) || _checkRight('Admin')) return true;
+					if(_checkRight('Seller', point) || _checkRight('Admin')) return true;
 					return false;
 					break;
 				case 'buy':
-					if(_checkRight('Seller', point) || _checkRight('Reloader', point) || _checkRight('Admin')) return true;
+					if(_checkRight('Seller', point) || _checkRight('Reloader', point) || _checkRight('droit_admin')) return true;
 					return false;
 					break;
 				case 'sell':
@@ -120,17 +120,14 @@ buckutt.provider('User', [
 					break;
 				default:
 					return false;
-
 			}
 			return false;
 		};
 
 		var _checkRight = function(right, point) {
 			if(!_user) return false;
-
 			for(var key in _user.UsersRights) {
 				var value = _user.UsersRights[key];
-				console.log(value);
 				if((value.name == right && !point) || (value.name == right && value.PointId == point)) return true;
 			}
 			return false;
