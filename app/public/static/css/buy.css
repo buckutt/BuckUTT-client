@@ -61,7 +61,6 @@
 }
 
 .buyer-cart {
-	height:calc(100% - 80px - 113px);
 	padding-top:15px;
 }
 
@@ -169,11 +168,13 @@
 }
 
 .choice-send {
-	height:65px;
-	width:100%;
+	height:60px;
+	width:25%;
+	max-width:325px;
 	background:#58a89b;
-	margin-top:15px;
-	padding-top:10px;
+	position:absolute;
+	bottom:0;
+	left:0;
 }
 
 .choice-send a {
@@ -186,6 +187,7 @@
 }
 
 .choice-send i {
+	margin-top:20px;
 	vertical-align:middle;
 }
 
