@@ -45,7 +45,7 @@ buckutt.controller('Connection', [
 					GetDevicePoint.get({
 						DeviceId: linkId,
 						order: 'priority',
-						asc: 'DESC',
+						asc: 'ASC',
 						embed: 'Period',
 						now: (new Date()).toISOString(),
 						isRemoved: false
