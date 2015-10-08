@@ -17,5 +17,5 @@ buckutt.factory('GetLogin', function ($resource) {
 });
 
 buckutt.factory('GetGroups', function ($resource) {
-	return $resource('/api/usersgroups?Period.startDate=<=:now&Period.endDate=>=:now');
+	return $resource('/api/usersgroups?Period.startDate=<%3d:now&Period.endDate=>%3d:now');
 });
