@@ -41,13 +41,14 @@ buckutt.controller('Connection', [
 			},
 			function(res_api) {
 				if(res_api.data) {
+					var currentDate = new Date();
 					var linkId = res_api.data.id;
 					GetDevicePoint.get({
 						DeviceId: linkId,
 						order: 'priority',
 						asc: 'ASC',
 						embed: 'Period',
-						now: (new Date()).toISOString(),
+						now: (new Date(currentDate.setTime(currentDate.valueOf() - 60000 * currentDate.getTimezoneOffset()))).toISOString(),
 						isRemoved: false
 					},
 					function(res_api) {

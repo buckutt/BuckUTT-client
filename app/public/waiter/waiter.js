@@ -36,9 +36,10 @@ buckutt.controller('Waiter', [
 						function(res_api2) {
 							if(!res_api2.error && res_api2.data) {
 								User.setBuyer(res_api2.data);
+								var date = new Date();
 								GetGroups.get({
 									UserId: res_api2.data.id,
-									now: (new Date()).toISOString(),
+									now: (new Date(date.setTime(date.valueOf() - 60000 * date.getTimezoneOffset()))).toISOString(),
 									isRemoved: false,
 									embed: 'Period'
 								},
