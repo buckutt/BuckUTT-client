@@ -42,6 +42,7 @@
 
 		<div class="resume" ng-if="lastBuyerData.buyer">
 			Dernière transaction par {{ lastBuyerData.buyer.firstname }} {{ lastBuyerData.buyer.lastname }}<br />
+			Nouveau solde: {{ (lastBuyerData.buyer.credit/100).toFixed(2) }}€<br />
 			<span ng-if="lastBuyerData.buy">Débit: {{ lastBuyerData.buy }}€</span><br />
 			<span ng-if="lastBuyerData.reload">Crédit: {{ lastBuyerData.reload }}€</span>
 		</div>
