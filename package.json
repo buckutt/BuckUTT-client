@@ -4,6 +4,11 @@
   "description": "Client du systeme de paiement electronique",
   "dependencies": {
     "http-proxy": "^1.10.1",
+    "forever": "^0.11.1",
     "node-static": "^0.7.6"
+  },
+  "scripts": {
+    "start": "./node_modules/forever/bin/forever start ./app/server.js ",
+    "stop": "./node_modules/forever/bin/forever stopall "
   }
 }

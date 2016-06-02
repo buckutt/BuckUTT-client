@@ -10,7 +10,8 @@ buckutt.controller('Waiter', [
 	'Device',
 	'User',
 	'Notifier',
-	function($scope, $location, $timeout, GetUser, GetId, GetGroups, Device, User, Notifier) {
+	'Socket',
+	function($scope, $location, $timeout, GetUser, GetId, GetGroups, Device, User, Notifier, Socket) {
 		if(!User.hasRight('waiter', Device.getDevicePoint())) {
 			Notifier('Erreur', 'error', 3);
 			User.logout();
@@ -19,6 +20,11 @@ buckutt.controller('Waiter', [
 
 		$scope.cardId = '';
 		$scope.lastBuyerData = User.getLastBuyerData();
+
+		Socket.on('card', function(data) {
+			$scope.cardId = data;
+			$scope.pressEnter();
+		});
 		
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');

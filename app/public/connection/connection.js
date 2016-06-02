@@ -12,9 +12,15 @@ buckutt.controller('Connection', [
 	'Device',
 	'GetLogin',
 	'jwtHelper',
-	function($scope, $location, $http, GetUser, GetDevice, GetDevicePoint, Notifier, User, Device, GetLogin, jwtHelper) {
+	'Socket',
+	function($scope, $location, $http, GetUser, GetDevice, GetDevicePoint, Notifier, User, Device, GetLogin, jwtHelper, Socket) {
 		$scope.userPin = '';
 		$scope.savedId = '';
+
+		Socket.on('card', function(data) {
+			$scope.cardId = data;
+			$scope.pressEnter();
+		});
 
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
