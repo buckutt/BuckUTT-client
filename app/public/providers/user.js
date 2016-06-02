@@ -92,7 +92,6 @@ buckutt.provider('User', [
 		};
 
 		var _logout = function() {
-			_setToken(undefined);
 			_setUser(undefined);
 		};
 
