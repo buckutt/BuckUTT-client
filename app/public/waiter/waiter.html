@@ -37,7 +37,7 @@
 		<br />
 		<h2 class="text-center"><strong>En attente d'une carte étu !</strong></h2>
 		<form>
-			<input type="text" ng-enter="pressEnter()" ng-model="cardId" id="cardId" class="hiddenElement" focus-me="cardIdFocus"/>
+			<input type="text" ng-enter="pressEnterWaiter()" ng-model="cardId" id="cardId" class="hiddenElement" focus-me="cardIdFocus"/>
 		</form>
 
 		<div class="resume" ng-if="lastBuyerData.buyer">
