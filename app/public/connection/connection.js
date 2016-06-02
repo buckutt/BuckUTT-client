@@ -18,8 +18,10 @@ buckutt.controller('Connection', [
 		$scope.savedId = '';
 
 		Socket.on('card', function(data) {
-			$scope.cardId = data;
-			$scope.pressEnter();
+ 			if(!User.getUser()) {
+				$scope.cardId = data;
+				$scope.pressEnter();
+			}
 		});
 
 		$scope.pressEnter = function() {
