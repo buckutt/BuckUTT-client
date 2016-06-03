@@ -18,7 +18,7 @@ buckutt.controller('Connection', [
 		$scope.savedId = '';
 
 		Socket.on('card', function(data) {
- 			if(!User.getUser()) {
+ 			if(!User.getUser() && !User.isBuyerLogged()) {
 				$scope.cardId = data;
 				$scope.pressEnter();
 			}

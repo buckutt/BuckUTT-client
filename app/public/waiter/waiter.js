@@ -22,12 +22,12 @@ buckutt.controller('Waiter', [
 		$scope.lastBuyerData = User.getLastBuyerData();
 
 		Socket.on('card', function(data) {
-			if(User.getUser()) {
+			if(User.getUser() && !User.isBuyerLogged()) {
 				$scope.cardId = data;
 				$scope.pressEnterWaiter();
 			}
 		});
-		
+
 		$scope.pressEnterWaiter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
 			if(cardId != "") {
