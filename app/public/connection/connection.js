@@ -26,6 +26,7 @@ buckutt.controller('Connection', [
 
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
+			cardId = cardId.substring(0,14);
 			if(cardId != "") {
 				$scope.savedId = cardId;
 				askForPin();

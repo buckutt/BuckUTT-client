@@ -30,6 +30,7 @@ buckutt.controller('Waiter', [
 
 		$scope.pressEnterWaiter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
+			cardId = cardId.substring(0,14);
 			if(cardId != "") {
 				GetId.get({
 					data: cardId,
