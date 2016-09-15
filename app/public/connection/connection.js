@@ -17,12 +17,16 @@ buckutt.controller('Connection', [
 		$scope.userPin = '';
 		$scope.savedId = '';
 
-		Socket.on('card', function(data) {
- 			if(!User.getUser() && !User.isBuyerLogged()) {
-				$scope.cardId = data;
-				$scope.pressEnter();
-			}
-		});
+
+		if(!User.getSellerSocket()) {
+			User.setSellerSocket(true);
+			Socket.on('card', function(data) {
+	 			if(!User.getUser() && !User.isBuyerLogged()) {
+					$scope.cardId = data;
+					$scope.pressEnter();
+				}
+			});
+		}
 
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
@@ -91,9 +95,13 @@ buckutt.controller('Connection', [
 					User.setToken(res_api.token);
 					var savedUser = res_api.user;
 					savedUser.UsersRights = jwtHelper.decodeToken(User.getToken()).rights;
-					User.setUser(savedUser);
-					$http.defaults.headers.common.Authorization = 'Bearer '+User.getToken();
-					updateDevice();
+					if(jwtHelper.decodeToken(User.getToken()).rights) {
+						User.setUser(savedUser);
+						$http.defaults.headers.common.Authorization = 'Bearer '+User.getToken();
+						updateDevice();
+					} else {
+						Notifier('Erreur', 'error', 2, '(rights)');
+					}
 				} else if(res_api.error) {
 					Notifier('Erreur', 'error', 2, '(login)');
 				}

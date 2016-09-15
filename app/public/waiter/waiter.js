@@ -21,12 +21,15 @@ buckutt.controller('Waiter', [
 		$scope.cardId = '';
 		$scope.lastBuyerData = User.getLastBuyerData();
 
-		Socket.on('card', function(data) {
-			if(User.getUser() && !User.isBuyerLogged()) {
-				$scope.cardId = data;
-				$scope.pressEnterWaiter();
-			}
-		});
+		if(!User.getBuyerSocket()) {
+			User.setBuyerSocket(true);
+			Socket.on('card', function(data) {
+				if(User.getUser() && !User.isBuyerLogged()) {
+					$scope.cardId = data;
+					$scope.pressEnterWaiter();
+				}
+			});
+		}
 
 		$scope.pressEnterWaiter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');

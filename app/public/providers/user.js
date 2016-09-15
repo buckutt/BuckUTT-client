@@ -5,6 +5,8 @@ buckutt.provider('User', [
 		var _token = undefined;
 		var _user = undefined;
 		var _buyer = undefined;
+		var _buyerSocket = undefined;
+		var _sellerSocket = undefined;
 		var _lastBuyerData = {
 			buyer: undefined,
 			buy: undefined,
@@ -13,6 +15,18 @@ buckutt.provider('User', [
 
 		this.$get = function() {
 			return {
+				getBuyerSocket: function() {
+					return _buyerSocket;
+				},
+				getSellerSocket: function() {
+					return _sellerSocket;
+				},
+				setBuyerSocket: function(value) {
+					_setBuyerSocket(value);
+				},
+				setSellerSocket: function(value) {
+					_setSellerSocket(value);
+				},
 				getUser: function () { 
 					return _user;
 				},
@@ -63,9 +77,17 @@ buckutt.provider('User', [
 			}
 		};
 
+		var _setBuyerSocket = function(value) {
+			_buyerSocket = value;
+		};
+
+		var _setSellerSocket = function(value) {
+			_sellerSocket = value;
+		};
+
 		var _setBuyerGroups = function(groups) {
 			_buyer.groups = groups;
-		}
+		};
 
 		var _setLastBuyer = function(buyer) {
 			_lastBuyerData.buyer = buyer;
