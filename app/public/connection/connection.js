@@ -4,6 +4,7 @@ buckutt.controller('Connection', [
 	'$scope',
 	'$location',
 	'$http',
+	'$window',
 	'GetUser',
 	'GetDevice',
 	'GetDevicePoint',
@@ -28,6 +29,9 @@ buckutt.controller('Connection', [
 			});
 		}
 
+		$scope.reloadPage = function () {
+            $window.location.reload();
+		}
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
 			cardId = cardId.substr(0,13);
