@@ -31,6 +31,10 @@ buckutt.controller('Waiter', [
 			});
 		}
 
+        $scope.reloadPage = function () {
+            location.reload();
+        };
+
 		$scope.pressEnterWaiter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
 			cardId = cardId.substr(0,13);

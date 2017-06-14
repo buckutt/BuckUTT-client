@@ -149,6 +149,10 @@ buckutt.controller('Buy', [
 				if($scope.buyer.credit+value*100 <= 10000) $scope.reloadingCredit = value;
 			};
 
+            $scope.reloadPage = function () {
+                location.reload();
+            };
+
 			$scope.addToCart = function() {
 				if($scope.buyer.credit+$scope.reloadingCredit*100 <= config.user.maxCredit) {
 					var isFound = false;
