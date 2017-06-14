@@ -4,6 +4,7 @@ buckutt.controller('Connection', [
 	'$scope',
 	'$location',
 	'$http',
+	'$window',
 	'GetUser',
 	'GetDevice',
 	'GetDevicePoint',
@@ -29,7 +30,7 @@ buckutt.controller('Connection', [
 		}
 
 		$scope.reloadPage = function () {
-			location.reload();
+			$window.location.reload();
 		}
 		
 		$scope.pressEnter = function() {
