@@ -30,8 +30,9 @@ buckutt.controller('Connection', [
 		}
 
 		$scope.reloadPage = function () {
-            $window.location.reload();
+			$window.location.reload();
 		}
+		
 		$scope.pressEnter = function() {
 			var cardId = $scope.cardId.replace(/(\s+)?.$/, '');
 			cardId = cardId.substr(0,13);
